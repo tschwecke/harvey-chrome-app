@@ -6,11 +6,16 @@ function WelcomeCtrl($scope) {
 	$scope.welcomeClass = '';
 	
 	$scope.openFile = function() {
-		$scope.welcomeClass = 'hideWelcome';
+		
+		setTimeout(function() {
+			$scope.welcomeClass = 'hideWelcome';
+		}, 300);
 	}
 
 	$scope.startFromScratch = function() {
-		$scope.welcomeClass = 'hideWelcome';
+		setTimeout(function() {
+			$scope.welcomeClass = 'hideWelcome';
+		}, 300);
 	}
  
 }
@@ -28,17 +33,36 @@ function TestCtrl($scope) {
 			tests = data.tests;
 		}
 		else {
-			for(var i=0; i<data.tests.length; i++) {
-				if(data.tests[i].id.toLowerCase().indexOf($scope.searchString.toLowerCase()) > -1) {
-					tests.push(data.tests[i]);
-				}
-			}
+			var tags = $scope.searchString.split(' ');
+			tests = filterTests(data.tests, tags);
 		}
 
 		$scope.filteredTests = tests;
 	};
+
+	var filterTests = function(tests, tags) {
+		if(!tags || tags.length == 0) return tests;
+
+		var tag = tags.pop();
+		var filteredTests = [];
+
+		for(var i=0; i<tests.length; i++) {
+			if(tests[i].id.toLowerCase().indexOf(tag.toLowerCase()) > -1) {
+				filteredTests.push(tests[i]);
+			}
+		}
+
+		return filterTests(filteredTests, tags);
+	};
+
+	var editTest = function(index) {
+		currentTest = $scope.filteredTests[index];
+
+		alert(currentTest.id);
+	};
 }
 
+var currentTest = null;
 var data = {
 	"requestTemplates": [{
 		"id": "simpleText.request",

@@ -1,0 +1,154 @@
+
+	body {
+		background-color: #F5F5F5;
+	}
+
+	#welcomeScreen {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		background-color: #F5F5F5;
+		transition: all .5s;
+		-webkit-transition: all .5s;
+	}
+	
+	.hideWelcome{
+		opacity: 0;
+		top: 1000px;
+	}
+
+	
+	#welcomeScreen .header {
+		text-align: center;
+	}
+
+	#welcomeScreen .welcomeContainer {
+		width: 468px;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	#welcomeScreen .welcomeButton {
+		position: relative;
+		height: 200px;
+		width: 200px;
+		border-radius: 10px;
+		float: left;
+		text-align: center;
+		vertical-align: center;
+		font-size: 25pt;
+		line-height: 27pt;
+		box-shadow: 5px 5px 5px #888888;
+		opacity: 0.75;
+		transition: all .3s;
+		-webkit-transition: all .3s;
+	}
+
+	#welcomeScreen .welcomeButton:hover {
+		box-shadow: 10px 10px 5px #888888;
+		opacity: 1;
+	}
+
+	#welcomeScreen .clickTest {
+		box-shadow: 8px 8px 5px #888888 !important;
+		transition: none !important;
+		-webkit-transition: none !important;
+	}
+
+	#welcomeScreen .clickTransition {
+		transition: none !important;
+		-webkit-transition: none !important;
+	}
+
+	#welcomeScreen .or {
+		position: relative;
+		height: 200px;
+		width: 28px;
+		float: left;
+		font-size: 25pt;
+		margin: 20px;
+	}
+
+	#welcomeScreen .centerText {
+		position: absolute;
+		top: 50%;
+		margin-top: -50px;
+	}
+
+	#welcomeScreen .openfile {
+		background-color: lightblue;
+	}
+
+	#welcomeScreen .scratch {
+		background-color: lightgreen;
+	}
+
+
+
+	.itemContainer {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 10px;
+
+		width: 1200px;
+		border-style: solid;
+		border-color: #888888;
+		border-width: 1px;
+
+		text-align: center;
+	}
+
+	.test {
+		display: inline-block;
+		background-color: #808880;
+		padding: 4px;
+		margin: 3px;
+		border-radius: 3px;
+		font-size: 1.2em;
+
+		text-align: left;
+
+		transition: opacity .6s;
+		-webkit-transition: opacity .6s;
+	}
+
+	.testHidden {
+		opacity: 0;
+	}
+
+
+	.testName {
+		font-weight: bold;
+	}
+
+	.setups {
+		font-size: .6em;
+	}
+
+	.menu {
+		text-align: center;
+	}
+	.menuItem {
+		display: inline-block;
+		margin: 5px;
+		padding: 3px;
+		font-size: 20pt;
+		font-weight: 400;
+		transition: font-weight .3s;
+		-webkit-transition: all .3s;
+	}
+
+	.menuItem:hover {
+		font-weight: 700;
+	}
+
+	.active {
+		font-weight: bold;
+	}
+
+	#search {
+		text-align: center;
+		font-size: 1.2em;
+		font-weight: bold;
+	}
