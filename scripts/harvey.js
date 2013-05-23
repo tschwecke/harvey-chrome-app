@@ -8,19 +8,37 @@ function WelcomeCtrl($scope) {
 	$scope.openFile = function() {
 		
 		setTimeout(function() {
-			$scope.welcomeClass = 'hideWelcome';
-		}, 300);
+			$scope.$apply(function() {
+				$scope.welcomeClass = 'fadeWelcome';
+			});
+
+			setTimeout(function() {
+				$scope.$apply(function() {
+					$scope.welcomeClass = 'hideWelcome';
+				});
+			}, 500);
+
+		}, 100);
 	}
 
 	$scope.startFromScratch = function() {
 		setTimeout(function() {
-			$scope.welcomeClass = 'hideWelcome';
-		}, 300);
+			$scope.$apply(function() {
+				$scope.welcomeClass = 'fadeWelcome';
+			});
+
+			setTimeout(function() {
+				$scope.$apply(function() {
+					$scope.welcomeClass = 'hideWelcome';
+				});
+			}, 500);
+
+		}, 100);
 	}
  
 }
 
-function TestCtrl($scope) {
+function TestListCtrl($scope) {
 
 	$scope.filteredTests = data.tests;
 
@@ -55,11 +73,38 @@ function TestCtrl($scope) {
 		return filterTests(filteredTests, tags);
 	};
 
-	var editTest = function(index) {
+	$scope.createTest = function() {
+		alert("new test");
+	};
+
+	$scope.editTest = function(index) {
 		currentTest = $scope.filteredTests[index];
 
 		alert(currentTest.id);
 	};
+
+	$scope.deleteTest = function(index) {
+		var testToDelete = $scope.filteredTests[index];
+
+		if(confirm("Are you sure you want to delete test '" + testToDelete.id + "'?")) {
+			testToDelete.deleting = true;
+
+			setTimeout(function() {
+				$scope.$apply(function() {
+					//Remove the test from the filtered tests
+					$scope.filteredTests.splice(index, 1);
+
+					//Find the test in the overall test list to remove it
+					for(var i=0; i<data.tests.length; i++) {
+						if(testToDelete === data.tests[i]) {
+							data.tests.splice(i, 1);
+						}
+					}
+				});
+			}, 500);
+		}
+	};
+
 }
 
 var currentTest = null;

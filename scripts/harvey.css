@@ -8,13 +8,16 @@
 		height: 100%;
 		width: 100%;
 		background-color: #F5F5F5;
-		transition: all .5s;
-		-webkit-transition: all .5s;
+		transition: opacity .5s;
+		-webkit-transition: opacity .5s;
 	}
 	
-	.hideWelcome{
+	.fadeWelcome{
 		opacity: 0;
-		top: 1000px;
+	}
+
+	.hideWelcome{
+		display: none;
 	}
 
 	
@@ -40,8 +43,8 @@
 		line-height: 27pt;
 		box-shadow: 5px 5px 5px #888888;
 		opacity: 0.75;
-		transition: all .3s;
-		-webkit-transition: all .3s;
+		transition: box-shadow .3s, opacity .3s;
+		-webkit-transition: box-shadow .3s, opacity .3s;
 	}
 
 	#welcomeScreen .welcomeButton:hover {
@@ -99,7 +102,7 @@
 		text-align: center;
 	}
 
-	.test {
+	#testContainer .test {
 		display: inline-block;
 		background-color: #808880;
 		padding: 4px;
@@ -109,23 +112,35 @@
 
 		text-align: left;
 
-		transition: opacity .6s;
-		-webkit-transition: opacity .6s;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
 	}
 
-	.testHidden {
+	#testContainer .deleting {
 		opacity: 0;
 	}
 
-
-	.testName {
+	#testContainer .testName {
 		font-weight: bold;
 	}
 
-	.setups {
+	#testContainer .setups {
 		font-size: .6em;
 	}
 
+	#testContainer .testIcons {
+		position: inline-block;
+		float:right;
+		opacity: 0;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+
+	#testContainer .test:hover .testIcons {
+		opacity: 1;
+	}
+
+	
 	.menu {
 		text-align: center;
 	}

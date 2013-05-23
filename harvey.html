@@ -17,13 +17,21 @@
 
 	<div class="menu"><div class="menuItem">Templates</div><div class="menuItem active">Tests</div><div class="menuItem">Helpers</div></div>
 	<div class="itemContainer">
-		<div class="testContainer" ng-controller="TestCtrl">
+		<div id="testContainer" ng-controller="TestListCtrl">
+			<i class="icon-plus" style="float:left" ng-click="createTest()"></i>
+		
 			<div class="search">
-				<input type="text" id="search" placeholder="Search" ng-model="searchString" ng-Change="filter()"></input>
+				<input type="text" id="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
 			</div>
-			<div class="test" ng-repeat="test in filteredTests" ng-click="editTest($index)">
+			<div ng-repeat="test in filteredTests" ng-class="{test: true, deleting: test.deleting}">
 				<div class="testName">{{test.id}}</div>
-				<div class="setups">Setups: {{test.setup.length}}; Teardowns: {{test.teardown.length}}</div>
+				<div class="setups">
+					Setups: {{test.setup.length}}; Teardowns: {{test.teardown.length}}
+					<div class="testIcons">
+						<i class="icon-edit" ng-click="editTest($index)"></i>
+						<i class="icon-trash" ng-click="deleteTest($index)"></i>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
