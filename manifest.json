@@ -1,16 +1,21 @@
 {
-  "manifest_version": 2,
+	"manifest_version": 2,
 
-  "name": "Harvey",
-  "description": "A chrome app to author Harvey tests.",
-  "version": "1.0",
+	"name": "Harvey",
+	"description": "A chrome app to author Harvey tests.",
+	"version": "1.0",
 
 
-   "app": {
-      "launch": {
-         "local_path": "harvey.html"
-      }
-   },
-   "permissions": [ "tabs", "*://*/*" ],
-	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+	"app": {
+		"background": {
+			"scripts": ["background.js"]
+		}
+	},
+	"permissions": [ "*://*/*", {"fileSystem": ["write"]}],
+
+	"minimum_chrome_version": "23",
+
+	"sandbox": {
+		"pages": ["harvey.html"]
+	}
 }

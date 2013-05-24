@@ -6,20 +6,25 @@ function WelcomeCtrl($scope) {
 	$scope.welcomeClass = '';
 	
 	$scope.openFile = function() {
-		
-		setTimeout(function() {
-			$scope.$apply(function() {
-				$scope.welcomeClass = 'fadeWelcome';
-			});
+	parent.postMessage('test', '*');
+/*		promptUserForFile(function(err, fileContents) {
+			if(fileContents) {
+				setTimeout(function() {
+					$scope.$apply(function() {
+						$scope.welcomeClass = 'fadeWelcome';
+					});
 
-			setTimeout(function() {
-				$scope.$apply(function() {
-					$scope.welcomeClass = 'hideWelcome';
-				});
-			}, 500);
+					setTimeout(function() {
+						$scope.$apply(function() {
+							$scope.welcomeClass = 'hideWelcome';
+						});
+					}, 500);
 
-		}, 100);
-	}
+				}, 100);
+			}
+		});
+*/		
+	};
 
 	$scope.startFromScratch = function() {
 		setTimeout(function() {
@@ -34,8 +39,32 @@ function WelcomeCtrl($scope) {
 			}, 500);
 
 		}, 100);
-	}
- 
+	};
+
+
+	var promptUserForFile = function(callback) {
+		var options = {
+			type: 'openFile', accepts:[{
+				extensions: ['json']
+			}]
+		};
+
+		chrome.fileSystem.chooseEntry(options, function(fileEntry) {
+			if (!fileEntry) {
+				alert("User did not choose a file");
+				callback();
+				return;
+			}
+			fileEntry.file(function(file) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					alert(e.target.result);
+					callback(null, e.target.result);
+				};
+				reader.readAsText(file);
+			});
+		});
+	};
 }
 
 function TestListCtrl($scope) {
