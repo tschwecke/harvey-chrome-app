@@ -1,16 +1,17 @@
 
 var app = angular.module('harvey', []);
 
-app.factory('harveyContext', function() {
+app.factory('HarveyContext', function() {
 	return {
 		"data" : {},
-		"testList": [],
+		"filteredTests": [],
 		"currentTest": {}
 	};
 });
 
-function WelcomeCtrl($scope, harveyContext) {
+function WelcomeCtrl($scope, HarveyContext) {
 
+	$scope.state = 'ready';
 
 	$scope.openFile = function() {
 	
@@ -19,8 +20,9 @@ function WelcomeCtrl($scope, harveyContext) {
 			if(fileContents) {
 				$scope.$apply(function(){
 					//Update the tests that the TestList is pointing to
-					harveyContext.data = JSON.parse(fileContents);
-					harveyContext.testList = harveyContext.data.tests;
+					HarveyContext.data = JSON.parse(fileContents);
+					
+					HarveyContext.filteredTests = HarveyContext.data.tests;
 				});
 
 				setTimeout(function() {
@@ -30,7 +32,7 @@ function WelcomeCtrl($scope, harveyContext) {
 
 					setTimeout(function() {
 						$scope.$apply(function() {
-							$scope.welcomeClass = 'hiding';
+							$scope.state = 'hiding';
 						});
 					}, 500);
 
@@ -71,11 +73,10 @@ function WelcomeCtrl($scope, harveyContext) {
 	};
 }
 
-function TestListCtrl($scope, harveyContext) {
+function TestListCtrl($scope, HarveyContext) {
 
-	$scope.$watch('harveyContext.testList', function(newValue, oldValue) {
-		$scope.filteredTests = newValue;
-	});
+	$scope.context = HarveyContext;
+
 //	$scope.filteredTests = harveyContext.testList;
 
 
@@ -86,14 +87,14 @@ function TestListCtrl($scope, harveyContext) {
 		var tests = [];
 
 		if($scope.searchString === "") {
-			tests = harveyContext.testList;
+			tests = HarveyContext.data.tests;
 		}
 		else {
 			var tags = $scope.searchString.split(' ');
-			tests = filterTests(harveyContext.testList, tags);
+			tests = filterTests(HarveyContext.data.tests, tags);
 		}
 
-		$scope.filteredTests = tests;
+		HarveyContext.filteredTests = tests;
 	};
 
 	var filterTests = function(tests, tags) {
@@ -112,30 +113,32 @@ function TestListCtrl($scope, harveyContext) {
 	};
 
 	$scope.createTest = function() {
-		alert("new test");
+		console.log("new test clicked");
 	};
 
 	$scope.editTest = function(index) {
-		harveyContext.currentTest = $scope.filteredTests[index];
+		HarveyContext.currentTest = HarveyContext.filteredTests[index];
 
-		alert(harveyContext.currentTest.id);
+		console.log('edit clicked for ' + HarveyContext.currentTest.id);
 	};
 
 	$scope.deleteTest = function(index) {
-		var testToDelete = $scope.filteredTests[index];
+		var testToDelete = HarveyContext.filteredTests[index];
 
-		if(confirm("Are you sure you want to delete test '" + testToDelete.id + "'?")) {
+		console.log('TODO: need to confirm the delete');
+		//if(confirm("Are you sure you want to delete test '" + testToDelete.id + "'?")) {
+		if(true) {
 			testToDelete.deleting = true;
 
 			setTimeout(function() {
 				$scope.$apply(function() {
 					//Remove the test from the filtered tests
-					$scope.filteredTests.splice(index, 1);
+					HarveyContext.filteredTests.splice(index, 1);
 
 					//Find the test in the overall test list to remove it
-					for(var i=0; i<harveyContext.testList.tests.length; i++) {
-						if(testToDelete === harveyContext.testList.tests[i]) {
-							harveyContext.testList.tests.splice(i, 1);
+					for(var i=0; i<HarveyContext.data.tests.length; i++) {
+						if(testToDelete === HarveyContext.data.tests[i]) {
+							HarveyContext.data.tests.splice(i, 1);
 						}
 					}
 				});

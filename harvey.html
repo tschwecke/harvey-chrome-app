@@ -5,7 +5,7 @@
 	<link href="scripts/harvey.css" rel="stylesheet" />
 </head>
 <body>
-	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="welcomeClass">
+	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="{fadeWelcome: state=='fading', hideWelcome: state=='hiding'}">
 		<h2 class="header">Welcome to Harvey</h2>
 		<div class="welcomeContainer">
 			<div id="open" ng-click="openFile()" ng-class="'welcomeButton openfile' + openClicked" ng-mousedown="openClicked=' clickTest'" ng-mouseup="openClicked=''"><div class="centerText">Open Existing Tests</div></div>
@@ -23,7 +23,7 @@
 			<div class="search">
 				<input type="text" id="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
 			</div>
-			<div ng-repeat="test in filteredTests" ng-class="{test: true, deleting: test.deleting}">
+			<div ng-repeat="test in context.data.tests" ng-class="{test: true, deleting: test.deleting}">
 				<div class="testName">{{test.id}}</div>
 				<div class="setups">
 					Setups: {{test.setup.length}}; Teardowns: {{test.teardown.length}}
