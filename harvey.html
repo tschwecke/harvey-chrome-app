@@ -4,8 +4,8 @@
 	<link href="scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="scripts/harvey.css" rel="stylesheet" />
 </head>
-<body>
-	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="{fadeWelcome: state=='fading', hideWelcome: state=='hiding'}">
+<body ng-controller="NavigationCtrl">
+	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="{fadeWelcome: state=='fading', hideWelcome: context.view!='Welcome'}">
 		<h2 class="header">Welcome to Harvey</h2>
 		<div class="welcomeContainer">
 			<div id="open" ng-click="openFile()" ng-class="'welcomeButton openfile' + openClicked" ng-mousedown="openClicked=' clickTest'" ng-mouseup="openClicked=''"><div class="centerText">Open Existing Tests</div></div>
@@ -15,15 +15,30 @@
 		</div>
 	</div>
 
-	<div class="menu"><div class="menuItem">Templates</div><div class="menuItem active">Tests</div><div class="menuItem">Helpers</div></div>
+	<div class="menu"><div class="menuItem">Templates</div><div class="menuItem active" ng-click="context.view='TestList'">Tests</div><div class="menuItem">Helpers</div></div>
 	<div class="itemContainer">
-		<div id="testContainer" ng-controller="TestListCtrl">
-			<i class="icon-plus" style="float:left" ng-click="createTest()"></i>
+	
+		<div ng-include src="context.view" ></div>
 		
+	</div>
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="scripts/bootstrap/js/bootstrap.min.js"></script>
+<script src="scripts/angular/angular.min.js"></script>
+<script src="scripts/harvey.js"></script>
+<script src="scripts/google-code-prettify/prettify.js?lan=javascript"></script>
+<script src="scripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/jsbeautifier/beautify.js"></script>
+<script src="scripts/underscore/underscore-min.js"></script>
+
+<script type="text/ng-template" id="TestList">
+		<div id="testListContainer" ng-controller="TestListCtrl"  ng-class="{fadeInTestList: state=='fadingIn'}">
+			<i class="icon-plus" style="float:left" ng-click="createTest()"></i>
+
 			<div class="search">
 				<input type="text" id="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
 			</div>
-			<div ng-repeat="test in context.data.tests" ng-class="{test: true, deleting: test.deleting}">
+			<div ng-repeat="test in context.filteredTests" ng-class="{test: true, deleting: test.deleting}">
 				<div class="testName">{{test.id}}</div>
 				<div class="setups">
 					Setups: {{test.setup.length}}; Teardowns: {{test.teardown.length}}
@@ -34,9 +49,73 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</body>
-<script src="scripts/bootstrap/js/bootstrap.min.js"></script>
-<script src="scripts/angular/angular.min.js"></script>
-<script src="scripts/harvey.js"></script>
+</script>
+
+<script type="text/ng-template" id="Test">
+		<div id="testContainer" ng-controller="TestCtrl" ng-class="{fadeInTest: state=='fadingIn'}">
+			<h3>Setups</h3>
+			<div ng-repeat="setup in currentTest.setup">
+				{{setup}}
+			</div>
+			<div ng-show="!currentTest.setup.length">No setups</div>
+			<h3>Test</h3>
+			<h4>Request</h4>
+			<div>
+				<input type="text" id="id" placeholder="id" ng-model="currentTest.id" />
+			</div>
+			<div>
+				<strong>Templates: </strong>
+				<span ng-repeat="template in currentTest.request.templates" class="templateName" style="background-color: {{getColor($index)}};">
+					{{template}}
+				</span>
+				<div ng-show="!currentTest.request.templates.length">No templates are used</div>
+			</div>
+			<div>
+				<select id="method" class="method" ng-model="currentTest.request.method.value" ng-change="updateBgColor(currentTest.request.method)" ng-style="{'background-color': currentTest.request.method.bgcolor}">
+					<option>GET</option>
+					<option>POST</option>
+					<option>PUT</option>
+					<option>DELETE</option>
+					<option>HEAD</option>
+					<option>OPTIONS</option>
+				</select>
+				<select id="protocol" class="protocol" ng-model="currentTest.request.protocol.value" ng-change="updateBgColor(currentTest.request.protocol)" ng-style="{'background-color': currentTest.request.protocol.bgcolor}">
+					<option value="http">http://</option>
+					<option value="https">https://</option>
+				</select>
+				<input type="text" id="host" ng-model="currentTest.request.host.value" ng-change="updateBgColor(currentTest.request.host)" ng-style="{'background-color': currentTest.request.host.bgcolor}" />
+				<input type="text" id="resource" class="resource" data-provide="typeahead" ng-model="currentTest.request.resource.value" ng-change="updateBgColor(currentTest.request.resource)" ng-style="{'background-color': currentTest.request.resource.bgcolor}" />
+			</div>
+			<div>
+				<h4>Querystring</h4>
+				<div  ng-repeat="qs in currentTest.request.querystring">
+					<input type="text" class="qs-name" ng-model="qs.key" />: <input type="text" class="qs-value" ng-model="qs.value" />
+					<i class="icon-remove" ng-click="removeQuerystring($index)"></i>
+				</div>
+				<div ng-show="!currentTest.request.querystring.length">No querystring variables defined</div>
+				<div><i class="icon-plus" ng-click="addQuerystring()"></i></div>
+			</div>
+			<div>
+				<h4>Headers</h4>
+				<div ng-repeat="header in currentTest.request.headers">
+					<input type="text" class="header-name" ng-model="header.key" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': header.bgcolor}" />:
+					<input type="text" class="header-value"  ng-model="header.value" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': header.bgcolor}" />
+					<i class="icon-remove" ng-click="removeHeader($index)"></i>
+				</div>
+				<div ng-show="!currentTest.request.headers.length">No headers defined</div>
+				<div><i class="icon-plus" ng-click="addHeader()"></i></div>
+			</div>
+			<h4>Body</h4>
+			<div><i id="beautify" class="icon-align-left" onclick="beautify();"></i> <span id="invalidjson" ng-show="validjson==false" class="label label-warning">Invalid Json</span></div>
+				<div id="requestBody" class="requestBody" ng-model="currentTest.id"></div>
+
+			<h3>Teardowns</h3>
+			<div ng-repeat="teardown in currentTest.teardown">
+				{{teardown}}
+			</div>
+			<div ng-show="!currentTest.teardown.length">No teardowns</div>
+		</div>
+
+
+</script>
 </html>
