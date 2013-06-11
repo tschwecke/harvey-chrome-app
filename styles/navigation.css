@@ -1,0 +1,60 @@
+
+	#menu.menu {
+		text-align: center;
+	}
+
+	#menu .menuItem {
+		display: inline-block;
+		margin: 5px;
+		padding: 3px;
+		font-size: 20pt;
+		color: gray;
+		transition: color .3s;
+		-webkit-transition: color .3s;
+	}
+
+	#menu .menuItem:hover {
+		color: black;
+	}
+
+	#menu .active {
+		color: black;
+	}
+
+	#menu .menuPointer {
+		height: 8px;
+		line-height: 8px;
+		margin-bottom: 1px;
+		transition: margin-left .6s;
+		-webkit-transition: margin-left .6s;
+	}
+
+	#menu .templatesActive {
+		margin-left: -190px;
+	}
+
+	#menu .testsActive {
+		margin-left: 35px;
+	}
+
+	#menu .helpersActive {
+		margin-left: 215px;
+	}
+
+
+
+
+	.itemContainer {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 10px;
+
+		width: 1200px;
+		border-style: solid;
+		border-color: #888888;
+		border-width: 1px 0px;;
+
+		text-align: center;
+	}
+ 

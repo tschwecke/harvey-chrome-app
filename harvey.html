@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="harvey">
 <head>
+	<title>Harvey</title>
+	
 	<link href="scripts/thirdParty/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="scripts/harvey.css" rel="stylesheet" />
+	<link href="styles/harvey.css" rel="stylesheet" />
+	<link href="styles/welcome.css" rel="stylesheet" />
+	<link href="styles/navigation.css" rel="stylesheet" />
+	<link href="styles/templateList.css" rel="stylesheet" />
+	<link href="styles/testList.css" rel="stylesheet" />
+	<link href="styles/helperList.css" rel="stylesheet" />
+	<link href="styles/template.css" rel="stylesheet" />
+	<link href="styles/test.css" rel="stylesheet" />
 </head>
 <body ng-controller="NavigationCtrl">
 	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="{fadeWelcome: state=='fading', hideWelcome: context.view!='Welcome'}">

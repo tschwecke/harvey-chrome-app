@@ -1,0 +1,54 @@
+
+	#helperListContainer.fadeInHelperList{
+		opacity: 1.0;
+	}
+
+	#helperListContainer {
+		opacity: 0;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+
+	#helperListContainer .search {
+		text-align: center;
+		font-size: 1.2em;
+		font-weight: bold;
+	}
+
+	#helperListContainer .helper {
+		display: inline-block;
+		background-color: #E3BBED;
+		padding: 4px;
+		margin: 3px;
+		border-radius: 3px;
+		font-size: 1.2em;
+		min-width: 120px;
+		text-align: left;
+
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+
+	#helperListContainer .deleting {
+		opacity: 0;
+	}
+
+	#helperListContainer .helperName {
+		font-weight: bold;
+	}
+
+	#helperListContainer .usedBy {
+		font-size: .6em;
+	}
+
+	#helperListContainer .helperIcons {
+		position: inline-block;
+		float:right;
+		opacity: 0;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+
+	#helperListContainer .helper:hover .helperIcons {
+		opacity: 1;
+	} 

@@ -1,0 +1,87 @@
+
+	#templateListContainer.fadeInTemplateList{
+		opacity: 1.0;
+	}
+
+	#templateListContainer {
+		opacity: 0;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+
+	#templateListContainer .search {
+		text-align: center;
+		font-size: 1.2em;
+		font-weight: bold;
+	}
+
+	#templateListContainer .template {
+		display: inline-block;
+		background-color: beige;
+		padding: 4px;
+		margin: 3px;
+		border-radius: 3px;
+		font-size: 1.2em;
+		min-width: 120px;
+		text-align: left;
+
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+
+	#templateListContainer .deleting {
+		opacity: 0;
+	}
+
+	#templateListContainer .templateName {
+		font-weight: bold;
+	}
+
+	#templateListContainer .usedBy {
+		font-size: .6em;
+	}
+
+	#templateListContainer .templateIcons {
+		position: inline-block;
+		float:right;
+		opacity: 0;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+
+	#templateListContainer .template:hover .templateIcons {
+		opacity: 1;
+	}
+
+	#templateListContainer .requestList {
+		position: inline-block;
+		float: left;
+		width: 50%;
+		text-align: left;
+	}
+
+	#templateListContainer .requestList .template {
+		background-color: #C3E6FC;
+	}
+
+	#templateListContainer .responseList .template {
+		background-color: #C8F6C8;
+	}
+
+
+	#templateListContainer .responseList {
+		position: inline-block;
+		float: right;
+		width: 50%;
+		text-align: right;
+	}
+
+	#templateListContainer .header {
+		font-weight: bold;
+		font-size: 1.3em;
+	}
+
+	#templateListContainer .icon-plus {
+		vertical-align: baseline;
+	}
+ 
