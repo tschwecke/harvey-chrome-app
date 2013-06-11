@@ -6,7 +6,8 @@ app.factory('HarveyContext', function() {
 		"data" : {},
 		"filteredTests": [],
 		"currentTest": {},
-		"view": "Welcome"
+		"view": "Welcome",
+		"upcomingView": "Welcome"
 	};
 });
 
@@ -14,6 +15,18 @@ function NavigationCtrl($scope, HarveyContext) {
 
 	$scope.state = 'ready';
 	$scope.context = HarveyContext;
+	$scope.selectedMenu = 'tests';
+
+	$scope.menuSelected  = function(menu, view) {
+		$scope.selectedMenu = menu;
+		$scope.context.upcomingView = view;
+		
+		setTimeout(function() {
+			$scope.$apply(function() {
+				$scope.context.view = view;
+			});
+		}, 300);
+	};
 }
 
 function WelcomeCtrl($scope, HarveyContext) {
@@ -81,16 +94,39 @@ function WelcomeCtrl($scope, HarveyContext) {
 	};
 }
 
+function TemplateListCtrl($scope, HarveyContext) {
+
+	$scope.state = '';
+	$scope.context = HarveyContext;
+
+	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
+		if (newValue != 'TemplateList')
+			$scope.state = 'fadingOut';
+	}, true);
+
+	setTimeout(function() {
+		$scope.$apply(function() {
+			$scope.state = 'fadingIn';
+		});
+	}, 1);
+};
+
+
 function TestListCtrl($scope, HarveyContext) {
+
 
 	$scope.context = HarveyContext;	
 	$scope.searchString = "";
 	$scope.state = '';
 
+	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
+		if (newValue != 'TestList')
+			$scope.state = 'fadingOut';
+	}, true);
+
 	setTimeout(function() {
 		$scope.$apply(function() {
 			$scope.state = 'fadingIn';
-			console.log('now');
 		});
 	}, 1);
 
@@ -166,6 +202,24 @@ function TestListCtrl($scope, HarveyContext) {
 	};
 
 }
+
+function HelperListCtrl($scope, HarveyContext) {
+
+	$scope.state = '';
+	$scope.context = HarveyContext;
+
+	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
+		if (newValue != 'HelperList')
+			$scope.state = 'fadingOut';
+	}, true);
+
+	setTimeout(function() {
+		$scope.$apply(function() {
+			$scope.state = 'fadingIn';
+		});
+	}, 1);
+};
+
 
 function TestCtrl($scope, HarveyContext) {
 	var _colors = ['lightblue', 'lightyellow', 'lightgreen', 'lightred'];

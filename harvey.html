@@ -15,7 +15,19 @@
 		</div>
 	</div>
 
-	<div class="menu"><div class="menuItem">Templates</div><div class="menuItem active" ng-click="context.view='TestList'">Tests</div><div class="menuItem">Helpers</div></div>
+	<div id="menu" class="menu">
+		<div>
+			<div ng-class="{menuItem: true, active: selectedMenu=='templates'}" ng-click="menuSelected('templates', 'TemplateList')">Templates</div>
+			<div ng-class="{menuItem: true, active: selectedMenu=='tests'}" ng-click="menuSelected('tests', 'TestList')">Tests</div>
+			<div ng-class="{menuItem: true, active: selectedMenu=='helpers'}" ng-click="menuSelected('helpers', 'HelperList')">Helpers</div>
+		</div>
+		<div ng-class="{menuPointer: true, templatesActive: selectedMenu=='templates', testsActive: selectedMenu=='tests', helpersActive: selectedMenu=='helpers'}">
+			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 15px; width: 50px;">
+				<polygon points="25,0 0,15 50,15" style="fill:lightgray;stroke:lightgray;stroke-width:1" />
+			</svg>
+		</div>
+	</div>
+
 	<div class="itemContainer">
 	
 		<div ng-include src="context.view" ></div>
@@ -30,6 +42,12 @@
 <script src="scripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="scripts/jsbeautifier/beautify.js"></script>
 <script src="scripts/underscore/underscore-min.js"></script>
+
+<script type="text/ng-template" id="TemplateList">
+	<div id="templateListContainer" ng-controller="TemplateListCtrl" ng-class="{fadeInTemplateList: state=='fadingIn'}">
+		Under Construction
+	</div>
+</script>
 
 <script type="text/ng-template" id="TestList">
 		<div id="testListContainer" ng-controller="TestListCtrl"  ng-class="{fadeInTestList: state=='fadingIn'}">
@@ -49,6 +67,12 @@
 				</div>
 			</div>
 		</div>
+</script>
+
+<script type="text/ng-template" id="HelperList">
+	<div id="helperListContainer" ng-controller="HelperListCtrl" ng-class="{fadeInHelperList: state=='fadingIn'}">
+		Under Construction
+	</div>
 </script>
 
 <script type="text/ng-template" id="Test">
