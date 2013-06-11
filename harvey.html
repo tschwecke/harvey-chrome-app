@@ -22,8 +22,8 @@
 			<div ng-class="{menuItem: true, active: selectedMenu=='helpers'}" ng-click="menuSelected('helpers', 'HelperList')">Helpers</div>
 		</div>
 		<div ng-class="{menuPointer: true, templatesActive: selectedMenu=='templates', testsActive: selectedMenu=='tests', helpersActive: selectedMenu=='helpers'}">
-			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 15px; width: 50px;">
-				<polygon points="25,0 0,15 50,15" style="fill:lightgray;stroke:lightgray;stroke-width:1" />
+			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 8px; width: 24px;">
+				<polygon points="12,0 0,8 24,8" style="fill:#555555;stroke:#555555;stroke-width:1" />
 			</svg>
 		</div>
 	</div>
@@ -45,33 +45,81 @@
 
 <script type="text/ng-template" id="TemplateList">
 	<div id="templateListContainer" ng-controller="TemplateListCtrl" ng-class="{fadeInTemplateList: state=='fadingIn'}">
-		Under Construction
-	</div>
-</script>
+		<div>
+			<input type="text" id="templateSearch" placeholder="Search" class="search" ng-model="searchString" ng-change="filter()"></input>
+		</div>
+		<div class="requestList">
+			<div class="header">Request Templates</div>
+			<div ng-repeat="template in filteredRequestTemplates" ng-class="{template: true, deleting: template.deleting}">
+				<div class="templateName">{{template.id}}</div>
+				<div class="usedBy">
+					Used by {{template.usedByCount}} <ng-pluralize count="template.usedByCount" when="{'one': 'test', 'other': 'tests'}"> </ng-pluralize>
 
-<script type="text/ng-template" id="TestList">
-		<div id="testListContainer" ng-controller="TestListCtrl"  ng-class="{fadeInTestList: state=='fadingIn'}">
-			<i class="icon-plus" style="float:left" ng-click="createTest()"></i>
-
-			<div class="search">
-				<input type="text" id="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
-			</div>
-			<div ng-repeat="test in context.filteredTests" ng-class="{test: true, deleting: test.deleting}">
-				<div class="testName">{{test.id}}</div>
-				<div class="setups">
-					Setups: {{test.setup.length}}; Teardowns: {{test.teardown.length}}
-					<div class="testIcons">
-						<i class="icon-edit" ng-click="editTest($index)"></i>
-						<i class="icon-trash" ng-click="deleteTest($index)"></i>
+					<div class="templateIcons">
+						<i class="icon-edit" ng-click="editRequestTemplate($index)"></i>
+						<i class="icon-trash" ng-click="deleteRequestTemplate($index)"></i>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<div class="responseList">
+			<div class="header">Response Templates</div>
+			<div ng-repeat="template in filteredResponseTemplates" ng-class="{template: true, deleting: template.deleting}">
+				<div class="templateName">{{template.id}}</div>
+				<div class="usedBy">
+					Used by {{template.usedByCount}} <ng-pluralize count="template.usedByCount" when="{'one': 'test', 'other': 'tests'}"> </ng-pluralize>
+
+					<div class="templateIcons">
+						<i class="icon-edit" ng-click="editResponseTemplate($index)"></i>
+						<i class="icon-trash" ng-click="deleteResponseTemplate($index)"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div style="clear: both;"></div>
+
+	</div>
+</script>
+
+<script type="text/ng-template" id="TestList">
+	<div id="testListContainer" ng-controller="TestListCtrl"  ng-class="{fadeInTestList: state=='fadingIn'}">
+		<i class="icon-plus" style="float:left" ng-click="createTest()"></i>
+
+		<div class="search">
+			<input type="text" id="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
+		</div>
+		<div ng-repeat="test in filteredTests" ng-class="{test: true, deleting: test.deleting}">
+			<div class="testName">{{test.id}}</div>
+			<div class="setups">
+				Setups: {{test.setup.length}}; Teardowns: {{test.teardown.length}}
+				<div class="testIcons">
+					<i class="icon-edit" ng-click="editTest($index)"></i>
+					<i class="icon-trash" ng-click="deleteTest($index)"></i>
+				</div>
+			</div>
+		</div>
+	</div>
 </script>
 
 <script type="text/ng-template" id="HelperList">
 	<div id="helperListContainer" ng-controller="HelperListCtrl" ng-class="{fadeInHelperList: state=='fadingIn'}">
-		Under Construction
+		<i class="icon-plus" style="float:left" ng-click="createHelper()"></i>
+
+		<div class="search">
+			<input type="text" id="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
+		</div>
+		<div ng-repeat="helper in filteredHelpers" ng-class="{helper: true, deleting: helper.deleting}">
+			<div class="helperName">{{helper.id}}</div>
+			<div class="usedBy">
+				Used by {{helper.usedByCount}} <ng-pluralize count="helper.usedByCount" when="{'one': 'test', 'other': 'tests'}"> </ng-pluralize>
+				<div class="helperIcons">
+					<i class="icon-edit" ng-click="editHelper($index)"></i>
+					<i class="icon-trash" ng-click="deleteHelper($index)"></i>
+				</div>
+			</div>
+		</div>
 	</div>
 </script>
 
@@ -83,10 +131,10 @@
 			</div>
 			<div ng-show="!currentTest.setup.length">No setups</div>
 			<h3>Test</h3>
-			<h4>Request</h4>
 			<div>
 				<input type="text" id="id" placeholder="id" ng-model="currentTest.id" />
 			</div>
+			<h4>Request</h4>
 			<div>
 				<strong>Templates: </strong>
 				<span ng-repeat="template in currentTest.request.templates" class="templateName" style="background-color: {{getColor($index)}};">

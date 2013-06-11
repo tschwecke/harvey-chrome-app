@@ -36,7 +36,6 @@ function WelcomeCtrl($scope, HarveyContext) {
 
 	$scope.openFile = function() {
 	
-
 		promptUserForFile(function(err, fileContents) {
 			if(fileContents) {
 				$scope.$apply(function(){
@@ -70,7 +69,7 @@ function WelcomeCtrl($scope, HarveyContext) {
 
 			setTimeout(function() {
 				$scope.$apply(function() {
-					$scope.state = 'hidden';
+					$scope.context.view = 'TestList';
 				});
 			}, 500);
 
@@ -98,31 +97,145 @@ function TemplateListCtrl($scope, HarveyContext) {
 
 	$scope.state = '';
 	$scope.context = HarveyContext;
+	$scope.filteredRequestTemplates = $scope.context.data.requestTemplates;
+	$scope.filteredResponseTemplates = $scope.context.data.responseTemplates;
+	$scope.searchString = "";
 
 	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
 		if (newValue != 'TemplateList')
 			$scope.state = 'fadingOut';
-	}, true);
+	});
 
 	setTimeout(function() {
 		$scope.$apply(function() {
 			$scope.state = 'fadingIn';
 		});
 	}, 1);
+
+
+	//Determine how many tests reference each template
+	for(var i=0; i<$scope.filteredRequestTemplates.length; i++) {
+		var template = $scope.filteredRequestTemplates[i];
+		template.usedByCount = 0;
+		
+		for(var j=0; j<$scope.context.data.tests.length; j++) {
+			var test = $scope.context.data.tests[j];
+			if(test.request && test.request.templates && test.request.templates.indexOf(template.id) > -1) {
+				template.usedByCount++;
+			}
+		}
+	}
+	for(var i=0; i<$scope.filteredResponseTemplates.length; i++) {
+		var template = $scope.filteredResponseTemplates[i];
+		template.usedByCount = 0;
+
+		for(var j=0; j<$scope.context.data.tests.length; j++) {
+			var test = $scope.context.data.tests[j];
+			if(test.expectedResponse && test.expectedResponse.templates && test.expectedResponse.templates.indexOf(template.id) > -1) {
+				template.usedByCount++;
+			}
+		}
+	}
+	
+
+	$scope.filter = function() {
+		var requestTemplates = [];
+		var responseTemplates = [];
+
+		if($scope.searchString === "") {
+			requestTemplates = HarveyContext.data.requestTemplates;
+			responseTemplates = HarveyContext.data.responseTemplates;
+		}
+		else {
+			var tags = $scope.searchString.split(' ');
+			requestTemplates = filterTemplates(HarveyContext.data.requestTemplates, tags);
+			responseTemplates = filterTemplates(HarveyContext.data.responseTemplates, tags);
+		}
+
+		$scope.filteredRequestTemplates = requestTemplates;
+		$scope.filteredResponseTemplates = responseTemplates;
+	};
+
+	var filterTemplates = function(templates, tags) {
+		//Clone the tags array so we don't modify the original
+		tags = tags.slice(0);
+		
+		if(!tags || tags.length == 0) return templates;
+
+		var tag = tags.pop();
+		var filteredTemplates = [];
+
+		for(var i=0; i<templates.length; i++) {
+			if(templates[i].id.toLowerCase().indexOf(tag.toLowerCase()) > -1) {
+				filteredTemplates.push(templates[i]);
+			}
+		}
+
+		return filterTemplates(filteredTemplates, tags);
+	};
+
+	$scope.deleteRequestTemplate = function(index) {
+		var templateToDelete = $scope.filteredRequestTemplates[index];
+
+		console.log('TODO: need to confirm the delete');
+		if(true) {
+			templateToDelete.deleting = true;
+
+			setTimeout(function() {
+				$scope.$apply(function() {
+					//Remove the template from the filtered tests
+					$scope.filteredRequestTemplates.splice(index, 1);
+
+					//Find the test in the overall test list to remove it
+					for(var i=0; i<$scope.context.data.requestTemplates.length; i++) {
+						if(templateToDelete === $scope.context.data.requestTemplates[i]) {
+							$scope.context.data.requestTemplates.splice(i, 1);
+						}
+					}
+				});
+			}, 500);
+		}
+	};
+
+	$scope.deleteResponseTemplate = function(index) {
+		var templateToDelete = $scope.filteredResponseTemplates[index];
+
+		console.log('TODO: need to confirm the delete');
+		if(true) {
+			templateToDelete.deleting = true;
+
+			setTimeout(function() {
+				$scope.$apply(function() {
+					//Remove the template from the filtered tests
+					$scope.filteredResponseTemplates.splice(index, 1);
+
+					//Find the test in the overall test list to remove it
+					for(var i=0; i<$scope.context.data.responseTemplates.length; i++) {
+						if(templateToDelete === $scope.context.data.responseTemplates[i]) {
+							$scope.context.data.responseTemplates.splice(i, 1);
+						}
+					}
+				});
+			}, 500);
+		}
+	};
+
+
 };
 
 
 function TestListCtrl($scope, HarveyContext) {
 
 
-	$scope.context = HarveyContext;	
+	$scope.context = HarveyContext;
+	$scope.filteredTests = $scope.context.data.tests;
 	$scope.searchString = "";
 	$scope.state = '';
 
 	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
 		if (newValue != 'TestList')
 			$scope.state = 'fadingOut';
-	}, true);
+	});
 
 	setTimeout(function() {
 		$scope.$apply(function() {
@@ -134,14 +247,14 @@ function TestListCtrl($scope, HarveyContext) {
 		var tests = [];
 
 		if($scope.searchString === "") {
-			tests = HarveyContext.data.tests;
+			tests = $scope.context.data.tests;
 		}
 		else {
 			var tags = $scope.searchString.split(' ');
-			tests = filterTests(HarveyContext.data.tests, tags);
+			tests = filterTests($scope.context.data.tests, tags);
 		}
 
-		HarveyContext.filteredTests = tests;
+		$scope.filteredTests = tests;
 	};
 
 	var filterTests = function(tests, tags) {
@@ -164,12 +277,12 @@ function TestListCtrl($scope, HarveyContext) {
 	};
 
 	$scope.editTest = function(index) {
-		HarveyContext.currentTest = HarveyContext.filteredTests[index];
+		$scope.context.currentTest = $scope.filteredTests[index];
 
-		console.log('edit clicked for ' + HarveyContext.currentTest.id);
+		console.log('edit clicked for ' + $scope.context.currentTest.id);
 
 		$scope.state = 'fadingOut';
-		
+		$scope.context.upcomingView = 'Test';
 		setTimeout(function() {
 			$scope.$apply(function() {
 				$scope.context.view = 'Test';
@@ -178,7 +291,7 @@ function TestListCtrl($scope, HarveyContext) {
 	};
 
 	$scope.deleteTest = function(index) {
-		var testToDelete = HarveyContext.filteredTests[index];
+		var testToDelete = $scope.filteredTests[index];
 
 		console.log('TODO: need to confirm the delete');
 		//if(confirm("Are you sure you want to delete test '" + testToDelete.id + "'?")) {
@@ -188,12 +301,12 @@ function TestListCtrl($scope, HarveyContext) {
 			setTimeout(function() {
 				$scope.$apply(function() {
 					//Remove the test from the filtered tests
-					HarveyContext.filteredTests.splice(index, 1);
+					$scope.filteredTests.splice(index, 1);
 
 					//Find the test in the overall test list to remove it
-					for(var i=0; i<HarveyContext.data.tests.length; i++) {
-						if(testToDelete === HarveyContext.data.tests[i]) {
-							HarveyContext.data.tests.splice(i, 1);
+					for(var i=0; i<$scope.context.data.tests.length; i++) {
+						if(testToDelete === $scope.context.data.tests[i]) {
+							$scope.context.data.tests.splice(i, 1);
 						}
 					}
 				});
@@ -207,17 +320,90 @@ function HelperListCtrl($scope, HarveyContext) {
 
 	$scope.state = '';
 	$scope.context = HarveyContext;
+	$scope.filteredHelpers = $scope.context.data.setupAndTeardowns;
+	$scope.searchString = "";
 
 	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
 		if (newValue != 'HelperList')
 			$scope.state = 'fadingOut';
-	}, true);
+	});
 
 	setTimeout(function() {
 		$scope.$apply(function() {
 			$scope.state = 'fadingIn';
 		});
 	}, 1);
+
+	//Determine how many tests reference each template
+	for(var i=0; i<$scope.filteredHelpers.length; i++) {
+		var helper = $scope.filteredHelpers[i];
+		helper.usedByCount = 0;
+
+		for(var j=0; j<$scope.context.data.tests.length; j++) {
+			var test = $scope.context.data.tests[j];
+			if((test.setup && test.setup.indexOf(helper.id) > -1)
+				|| (test.teardown && test.teardown.indexOf(helper.id) > -1)) {
+				helper.usedByCount++;
+			}
+		}
+	}
+
+	$scope.filter = function() {
+		var helpers = [];
+
+		if($scope.searchString === "") {
+			helpers = $scope.context.data.setupAndTeardowns;
+		}
+		else {
+			var tags = $scope.searchString.split(' ');
+			helpers = filterHelpers($scope.context.data.setupAndTeardowns, tags);
+		}
+
+		$scope.filteredHelpers = helpers;
+	};
+
+	var filterHelpers = function(helpers, tags) {
+		//Clone the tags array so we don't modify the original
+		tags = tags.slice(0);
+
+		if(!tags || tags.length == 0) return helpers;
+
+		var tag = tags.pop();
+		var filteredHelpers = [];
+
+		for(var i=0; i<helpers.length; i++) {
+			if(helpers[i].id.toLowerCase().indexOf(tag.toLowerCase()) > -1) {
+				filteredHelpers.push(helpers[i]);
+			}
+		}
+
+		return filterHelpers(filteredHelpers, tags);
+	};
+	
+	$scope.deleteHelper = function(index) {
+		var helperToDelete = $scope.filteredHelpers[index];
+
+		console.log('TODO: need to confirm the delete');
+		//if(confirm("Are you sure you want to delete test '" + testToDelete.id + "'?")) {
+		if(true) {
+			helperToDelete.deleting = true;
+
+			setTimeout(function() {
+				$scope.$apply(function() {
+					//Remove the test from the filtered tests
+					$scope.filteredHelpers.splice(index, 1);
+
+					//Find the test in the overall test list to remove it
+					for(var i=0; i<$scope.context.data.setupAndTeardowns.length; i++) {
+						if(helperToDelete === $scope.context.data.setupAndTeardowns[i]) {
+							$scope.context.data.setupAndTeardowns.splice(i, 1);
+						}
+					}
+				});
+			}, 500);
+		}
+	};
+
 };
 
 
@@ -226,6 +412,11 @@ function TestCtrl($scope, HarveyContext) {
 	$scope.context = HarveyContext;
 	$scope.state = '';
 
+	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
+		if (newValue != 'Test')
+			$scope.state = 'fadingOut';
+	});
+	
 	setTimeout(function() {
 		$scope.$apply(function() {
 			$scope.state = 'fadingIn';
