@@ -229,8 +229,12 @@
 		font-weight: bold;
 		font-size: 1.3em;
 	}
+	
+	#templateListContainer .icon-plus {
+		vertical-align: baseline;
+	}
 
-
+	
 
 	#testListContainer.fadeInTestList{
 		opacity: 1.0;
@@ -344,7 +348,17 @@
 		opacity: 1;
 	}
 
+	
 
+	#templateContainer.fadeInTemplate{
+		opacity: 1.0;
+	}
+
+	#templateContainer {
+		opacity: 0;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
 
 
 	

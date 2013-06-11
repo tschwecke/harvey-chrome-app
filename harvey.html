@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="harvey">
 <head>
-	<link href="scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="scripts/thirdParty/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="scripts/harvey.css" rel="stylesheet" />
 </head>
 <body ng-controller="NavigationCtrl">
@@ -34,14 +34,26 @@
 		
 	</div>
 </body>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="scripts/bootstrap/js/bootstrap.min.js"></script>
-<script src="scripts/angular/angular.min.js"></script>
+<script src="scripts/thirdParty/jquery/jquery.min.js"></script>
+<script src="scripts/thirdParty/bootstrap/js/bootstrap.min.js"></script>
+<script src="scripts/thirdParty/angular/angular.min.js"></script>
+<script src="scripts/thirdParty/google-code-prettify/prettify.js?lan=javascript"></script>
+<script src="scripts/thirdParty/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/thirdParty/jsbeautifier/beautify.js"></script>
+<script src="scripts/thirdParty/underscore/underscore-min.js"></script>
+
 <script src="scripts/harvey.js"></script>
-<script src="scripts/google-code-prettify/prettify.js?lan=javascript"></script>
-<script src="scripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="scripts/jsbeautifier/beautify.js"></script>
-<script src="scripts/underscore/underscore-min.js"></script>
+<script src="scripts/controllers/NavigationCtrl.js"></script>
+<script src="scripts/controllers/WelcomeCtrl.js"></script>
+<script src="scripts/controllers/TemplateListCtrl.js"></script>
+<script src="scripts/controllers/TestListCtrl.js"></script>
+<script src="scripts/controllers/HelperListCtrl.js"></script>
+<script src="scripts/controllers/TemplateCtrl.js"></script>
+<script src="scripts/controllers/TestCtrl.js"></script>
+
+
+<script type="text/ng-template" id="Welcome">
+</script>
 
 <script type="text/ng-template" id="TemplateList">
 	<div id="templateListContainer" ng-controller="TemplateListCtrl" ng-class="{fadeInTemplateList: state=='fadingIn'}">
@@ -49,7 +61,10 @@
 			<input type="text" id="templateSearch" placeholder="Search" class="search" ng-model="searchString" ng-change="filter()"></input>
 		</div>
 		<div class="requestList">
-			<div class="header">Request Templates</div>
+			<div class="header">
+				Request Templates
+				<i class="icon-plus"ng-click="createRequestTemplate()"></i>
+			</div>
 			<div ng-repeat="template in filteredRequestTemplates" ng-class="{template: true, deleting: template.deleting}">
 				<div class="templateName">{{template.id}}</div>
 				<div class="usedBy">
@@ -64,8 +79,10 @@
 		</div>
 
 		<div class="responseList">
-			<div class="header">Response Templates</div>
-			<div ng-repeat="template in filteredResponseTemplates" ng-class="{template: true, deleting: template.deleting}">
+			<div class="header">
+				<i class="icon-plus" ng-click="createResponseTemplate()"></i>
+				Response Templates
+			</div>			<div ng-repeat="template in filteredResponseTemplates" ng-class="{template: true, deleting: template.deleting}">
 				<div class="templateName">{{template.id}}</div>
 				<div class="usedBy">
 					Used by {{template.usedByCount}} <ng-pluralize count="template.usedByCount" when="{'one': 'test', 'other': 'tests'}"> </ng-pluralize>
@@ -122,6 +139,14 @@
 		</div>
 	</div>
 </script>
+
+
+<script type="text/ng-template" id="Template">
+	<div id="templateContainer" ng-controller="TemplateCtrl" ng-class="{fadeInTemplate: state=='fadingIn'}">
+		Under Construction
+	</div>
+</script>
+
 
 <script type="text/ng-template" id="Test">
 		<div id="testContainer" ng-controller="TestCtrl" ng-class="{fadeInTest: state=='fadingIn'}">
