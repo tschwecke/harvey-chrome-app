@@ -119,7 +119,7 @@
 		<i class="icon-plus" style="float:left" ng-click="createTest()"></i>
 
 		<div class="search">
-			<input type="text" id="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
+			<input type="text" id="testSearch" class="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
 		</div>
 		<div ng-repeat="test in filteredTests" ng-class="{test: true, deleting: test.deleting}">
 			<div class="testName">{{test.id}}</div>
@@ -141,7 +141,7 @@
 		<i class="icon-plus" style="float:left" ng-click="createHelper()"></i>
 
 		<div class="search">
-			<input type="text" id="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
+			<input type="text" id="helperSearch" class="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
 		</div>
 		<div ng-repeat="helper in filteredHelpers" ng-class="{helper: true, deleting: helper.deleting}">
 			<div class="helperName">{{helper.id}}</div>

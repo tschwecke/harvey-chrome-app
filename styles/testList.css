@@ -13,6 +13,12 @@
 		-webkit-transition: opacity .3s;
 	}
 
+	#testListContainer .search {
+		text-align: center;
+		font-size: 17px;
+		font-weight: bold;
+	}
+
 
 	#testListContainer .test {
 		display: inline-block;
