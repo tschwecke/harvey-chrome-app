@@ -66,8 +66,35 @@
 		opacity: 1;
 	}
 
+	#requestContainer .bodyTools {
+		float: right;
+	}
+
 	#requestContainer .ace_scrollbar, #requestContainer .ace_print-margin {
 		display: none !important;
 	}
 
  
+	#requestContainer .hide {
+		display: none;
+	}
+
+	#requestContainer .placeholder {
+		color: #cccccc;
+	}
+
+	#requestContainer .placeholder option {
+		color: #000000;
+	}
+
+	#requestContainer .save {
+		text-align: center;
+		margin-top: 10px;
+	}
+
+	#requestContainer .save:hover {
+		text-decoration: underline;
+	}
+
+	
+

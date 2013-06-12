@@ -239,7 +239,8 @@
 
 	<div id="requestContainer" ng-controller="RequestCtrl">
 		<div class="container">
-			<select id="method" class="method" ng-model="request.method.value" ng-change="updateBgColor(request.method)" ng-style="{'background-color': request.method.bgcolor}">
+			<select id="method" ng-class="{method: true, placeholder: methodEmpty}" ng-model="request.method.value" ng-change="methodChanged()" ng-style="{'background-color': request.method.bgcolor}">
+				<option value='' ng-disabled="methodEmpty" ng-class="{hide: methodEmpty}">{{methodPlaceholder}}</option>
 				<option>GET</option>
 				<option>POST</option>
 				<option>PUT</option>
@@ -247,7 +248,8 @@
 				<option>HEAD</option>
 				<option>OPTIONS</option>
 			</select>
-			<select id="protocol" class="protocol" ng-model="request.protocol.value" ng-change="updateBgColor(request.protocol)" ng-style="{'background-color': request.protocol.bgcolor}">
+			<select id="protocol" ng-class="{protocol: true, placeholder: protocolEmpty}" ng-model="request.protocol.value" ng-change="protocolChanged()" ng-style="{'background-color': request.protocol.bgcolor}">
+				<option value='' ng-disabled="protocolEmpty" ng-class="{hide: protocolEmpty}">{{protocolPlaceholder}}</option>
 				<option value="http">http://</option>
 				<option value="https">https://</option>
 			</select>
@@ -272,14 +274,16 @@
 			<div ng-show="!request.headers.length" class="empty">None</div>
 		</div>
 		<div class="container">
-			<div class="header">Body</div>
-			<div>
-				<i id="beautify" class="icon-align-left" ng-click="formatBody()"></i>
-				<span id="invalidjson" ng-show="validjson==false" class="label label-warning">Invalid Json</span>
-			<div>
+			<div class="header">Body
+				<div class="bodyTools">
+					<i id="beautify" class="icon-align-left" ng-click="formatBody()"></i>
+					<span id="invalidjson" ng-show="validjson==false" class="label label-warning">Invalid Json</span>
+				<div>
+			</div>
 		</div>
 		<div id="requestBody" class="requestBody"></div>
-	</request>
+		<div ng-show="changed" class="save">Save</div>
+	</div>
 	
 </script>
 	

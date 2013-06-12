@@ -3,7 +3,21 @@ function RequestCtrl($scope, RequestContext) {
 	var _colors = ['#E7FAFA', 'lightyellow', 'lightgreen', 'lightred'];
 	$scope.request = RequestContext.currentRequest;
 	$scope.validjson = true;
+	$scope.changed = false;
+	$scope.methodEmpty = !$scope.request.method.value;
+	$scope.methodPlaceholder = $scope.methodEmpty ? 'Method' : '';
+	$scope.protocolEmpty = !$scope.request.protocol.value;
+	$scope.protocolPlaceholder = $scope.protocolEmpty ? 'Protocol' : '';
 
+	var originalRequest = null;
+	$scope.$watch('request', function(newValue, oldValue) {
+		if(!originalRequest) {
+			originalRequest = JSON.stringify(newValue);
+		}
+		
+		var currentRequest = JSON.stringify(newValue);
+		$scope.changed = (originalRequest !== currentRequest);
+	}, true);
 
 	$scope.getColor = function(index) {
 		return _colors[index];
@@ -11,19 +25,19 @@ function RequestCtrl($scope, RequestContext) {
 
 	$scope.updateBgColor = function(field) {
 		if(field.value == field.inheritedValue) {
-			field.bgcolor = $scope.color[field.inheritedFrom] || transparent;
+			field.bgcolor = $scope.color[field.inheritedFrom] || '';
 		}
 		else {
-			field.bgcolor = 'transparent';
+			field.bgcolor = '';
 		}
 	}
 
 	$scope.updateHeaderBgColor = function(field) {
 		if(field.key == field.inheritedKey && field.value == field.inheritedValue) {
-			field.bgcolor = $scope.color[field.inheritedFrom] || transparent;
+			field.bgcolor = $scope.color[field.inheritedFrom] || '';
 		}
 		else {
-			field.bgcolor = 'transparent';
+			field.bgcolor = '';
 		}
 	}
 
@@ -49,12 +63,27 @@ function RequestCtrl($scope, RequestContext) {
 	}
 
 	$scope.formatBody = function() {
-		$scope.request.body = beautify($scope.request.body);
+		$scope.request.body.value = beautify($scope.request.body.value);
 	};
 
 	$scope.updateModelWithBody = function(bodyText) {
-		$scope.request.body = bodyText;
+		$scope.request.body.value = bodyText;
 	}
+
+	$scope.methodChanged = function() {
+		$scope.methodEmpty = !$scope.request.method.value;
+		$scope.methodPlaceholder = $scope.methodEmpty ? 'Method' : '';
+
+		$scope.updateBgColor($scope.request.method);
+	};
+
+	$scope.protocolChanged = function() {
+		$scope.protocolEmpty = !$scope.request.protocol.value;
+		$scope.protocolPlaceholder = $scope.protocolEmpty ? 'Protocol' : '';
+
+		$scope.updateBgColor($scope.request.protocol);
+	};
+
 
 	var doGetCaretPosition = function(ctrl) {
 		var CaretPos = 0;
@@ -151,7 +180,7 @@ function RequestCtrl($scope, RequestContext) {
 
 
 	}
-	wireupForm($scope, $scope.request.body, $scope.updateModelWithBody);
+	wireupForm($scope, $scope.request.body.value, $scope.updateModelWithBody);
 
 	//Assign template colors
 	$scope.color = {};
