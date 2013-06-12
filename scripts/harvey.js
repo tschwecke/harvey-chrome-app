@@ -11,3 +11,10 @@ app.factory('HarveyContext', function() {
 		"upcomingView": "Welcome"
 	};
 });
+
+app.factory('RequestContext', function() {
+	return {
+		"currentRequest" : {},
+		"availableVariables": []
+	};
+});

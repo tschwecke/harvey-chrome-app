@@ -1,0 +1,73 @@
+
+	#requestContainer {
+		text-align: left;
+	}
+
+	#requestContainer .container {
+		max-width: 500px;
+	}
+
+	#requestContainer .method {
+		width: 95px;
+	}
+
+	#requestContainer .protocol {
+		width: 80px;
+	}
+
+	#requestContainer .host {
+		width: 300px;
+	}
+
+	#requestContainer .resource {
+		width: 484px;
+	}
+	
+	#requestContainer .requestBody {
+		height: 75px;
+		width: 100%;
+		border-radius: 4px;
+		border-color: rgb(204, 204, 204);
+		border-style: solid;
+		border-width: 1px;
+	}
+	#requestContainer .invalidjson {
+		display: none;
+	}
+	#requestContainer .qs-name, #requestContainer .header-name {
+		width: 100px;
+	}
+	#requestContainer .templateName {
+		margin: 2px;
+		padding: 3px;
+		border-radius: 5px;
+		background-color: lightblue;
+	}
+
+	#requestContainer .header {
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: bold;
+		margin-top: 5px;
+	}
+	#requestContainer .empty {
+		font-weight: bold;
+		color: #CCCCCC;
+	}
+
+	#requestContainer i {
+		vertical-align: baseline;
+		opacity: .65;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+	
+	#requestContainer i:hover {
+		opacity: 1;
+	}
+
+	#requestContainer .ace_scrollbar, #requestContainer .ace_print-margin {
+		display: none !important;
+	}
+
+ 
