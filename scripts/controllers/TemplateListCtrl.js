@@ -3,7 +3,9 @@ function TemplateListCtrl($scope, HarveyContext) {
 	$scope.state = '';
 	$scope.context = HarveyContext;
 	$scope.filteredRequestTemplates = $scope.context.data.requestTemplates;
+	$scope.allRequestTemplates = $scope.context.data.requestTemplates;
 	$scope.filteredResponseTemplates = $scope.context.data.responseTemplates;
+	$scope.allResponseTemplates = $scope.context.data.responseTemplates;
 	$scope.searchString = "";
 
 	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
@@ -19,29 +21,30 @@ function TemplateListCtrl($scope, HarveyContext) {
 
 
 	//Determine how many tests reference each template
-	for(var i=0; i<$scope.filteredRequestTemplates.length; i++) {
-		var template = $scope.filteredRequestTemplates[i];
-		template.usedByCount = 0;
+	if($scope.filteredRequestTemplates && $scope.filteredResponseTemplates) {
+		for(var i=0; i<$scope.filteredRequestTemplates.length; i++) {
+			var template = $scope.filteredRequestTemplates[i];
+			template.usedByCount = 0;
 
-		for(var j=0; j<$scope.context.data.tests.length; j++) {
-			var test = $scope.context.data.tests[j];
-			if(test.request && test.request.templates && test.request.templates.indexOf(template.id) > -1) {
-				template.usedByCount++;
+			for(var j=0; j<$scope.context.data.tests.length; j++) {
+				var test = $scope.context.data.tests[j];
+				if(test.request && test.request.templates && test.request.templates.indexOf(template.id) > -1) {
+					template.usedByCount++;
+				}
+			}
+		}
+		for(var i=0; i<$scope.filteredResponseTemplates.length; i++) {
+			var template = $scope.filteredResponseTemplates[i];
+			template.usedByCount = 0;
+
+			for(var j=0; j<$scope.context.data.tests.length; j++) {
+				var test = $scope.context.data.tests[j];
+				if(test.expectedResponse && test.expectedResponse.templates && test.expectedResponse.templates.indexOf(template.id) > -1) {
+					template.usedByCount++;
+				}
 			}
 		}
 	}
-	for(var i=0; i<$scope.filteredResponseTemplates.length; i++) {
-		var template = $scope.filteredResponseTemplates[i];
-		template.usedByCount = 0;
-
-		for(var j=0; j<$scope.context.data.tests.length; j++) {
-			var test = $scope.context.data.tests[j];
-			if(test.expectedResponse && test.expectedResponse.templates && test.expectedResponse.templates.indexOf(template.id) > -1) {
-				template.usedByCount++;
-			}
-		}
-	}
-
 
 	$scope.filter = function() {
 		var requestTemplates = [];

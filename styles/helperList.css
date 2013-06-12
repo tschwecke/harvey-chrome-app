@@ -52,3 +52,13 @@
 	#helperListContainer .helper:hover .helperIcons {
 		opacity: 1;
 	} 
+
+	#helperListContainer .empty, #helperListContainer .noMatches  {
+		font-size: 50px;
+		line-height: 50px;
+		color: #EEEEEE;
+		font-weight: bold;
+		margin-top: 10px;
+		margin-bottom: 18px;
+	}
+

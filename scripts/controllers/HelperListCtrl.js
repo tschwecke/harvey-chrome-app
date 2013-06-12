@@ -2,6 +2,7 @@ function HelperListCtrl($scope, HarveyContext) {
 
 	$scope.state = '';
 	$scope.context = HarveyContext;
+	$scope.allHelpers = $scope.context.data.setupAndTeardowns;
 	$scope.filteredHelpers = $scope.context.data.setupAndTeardowns;
 	$scope.searchString = "";
 
@@ -17,15 +18,17 @@ function HelperListCtrl($scope, HarveyContext) {
 	}, 1);
 
 	//Determine how many tests reference each template
-	for(var i=0; i<$scope.filteredHelpers.length; i++) {
-		var helper = $scope.filteredHelpers[i];
-		helper.usedByCount = 0;
+	if($scope.filteredHelpers) {
+		for(var i=0; i<$scope.filteredHelpers.length; i++) {
+			var helper = $scope.filteredHelpers[i];
+			helper.usedByCount = 0;
 
-		for(var j=0; j<$scope.context.data.tests.length; j++) {
-			var test = $scope.context.data.tests[j];
-			if((test.setup && test.setup.indexOf(helper.id) > -1)
-				|| (test.teardown && test.teardown.indexOf(helper.id) > -1)) {
-				helper.usedByCount++;
+			for(var j=0; j<$scope.context.data.tests.length; j++) {
+				var test = $scope.context.data.tests[j];
+				if((test.setup && test.setup.indexOf(helper.id) > -1)
+					|| (test.teardown && test.teardown.indexOf(helper.id) > -1)) {
+					helper.usedByCount++;
+				}
 			}
 		}
 	}

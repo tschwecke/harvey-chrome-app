@@ -52,5 +52,13 @@
 		opacity: 1;
 	}
 
+	#testListContainer .empty, #testListContainer .noMatches {
+		font-size: 50px;
+		line-height: 50px;
+		color: #EEEEEE;
+		font-weight: bold;
+		margin-top: 10px;
+		margin-bottom: 18px;
+	}
 
  

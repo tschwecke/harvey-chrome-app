@@ -3,6 +3,7 @@ function TestListCtrl($scope, HarveyContext) {
 
 
 	$scope.context = HarveyContext;
+	$scope.allTests = $scope.context.data.tests;
 	$scope.filteredTests = $scope.context.data.tests;
 	$scope.searchString = "";
 	$scope.state = '';

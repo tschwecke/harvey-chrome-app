@@ -85,13 +85,16 @@
 					</div>
 				</div>
 			</div>
+			<div class="noMatches" ng-show="allRequestTemplates.length > 0 && filteredRequestTemplates.length == 0">No Matches</div>
+			<div class="empty" ng-show="!allRequestTemplates.length">Empty</div>
 		</div>
 
 		<div class="responseList">
 			<div class="header">
 				<i class="icon-plus" ng-click="createResponseTemplate()"></i>
 				Response Templates
-			</div>			<div ng-repeat="template in filteredResponseTemplates" ng-class="{template: true, deleting: template.deleting}">
+			</div>
+			<div ng-repeat="template in filteredResponseTemplates" ng-class="{template: true, deleting: template.deleting}">
 				<div class="templateName">{{template.id}}</div>
 				<div class="usedBy">
 					Used by {{template.usedByCount}} <ng-pluralize count="template.usedByCount" when="{'one': 'test', 'other': 'tests'}"> </ng-pluralize>
@@ -102,6 +105,8 @@
 					</div>
 				</div>
 			</div>
+			<div class="noMatches" ng-show="allResponseTemplates.length > 0 && filteredResponseTemplates.length == 0">No Matches</div>
+			<div class="empty" ng-show="!allResponseTemplates.length">Empty</div>
 		</div>
 
 		<div style="clear: both;"></div>
@@ -126,6 +131,8 @@
 				</div>
 			</div>
 		</div>
+		<div class="noMatches" ng-show="allTests.length > 0 && filteredTests.length == 0">No Matches</div>
+		<div class="empty" ng-show="!allTests.length">Empty</div>
 	</div>
 </script>
 
@@ -146,6 +153,8 @@
 				</div>
 			</div>
 		</div>
+		<div class="noMatches" ng-show="allHelpers.length > 0 && filteredHelpers.length == 0">No Matches</div>
+		<div class="empty" ng-show="!allHelpers.length">Empty</div>
 	</div>
 </script>
 
