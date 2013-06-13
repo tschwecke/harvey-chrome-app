@@ -64,6 +64,16 @@ function HelperListCtrl($scope, HarveyContext, NavigationSvc) {
 		return filterHelpers(filteredHelpers, tags);
 	};
 
+	$scope.createHelper = function() {
+		HarveyContext.currentHelper = {};
+		NavigationSvc.navigate('Helper');
+	};
+
+	$scope.editHelper = function(index) {
+		HarveyContext.currentHelper = $scope.filteredHelpers[index];
+		NavigationSvc.navigate('Helper');
+	};
+
 	$scope.deleteHelper = function(index) {
 		var helperToDelete = $scope.filteredHelpers[index];
 

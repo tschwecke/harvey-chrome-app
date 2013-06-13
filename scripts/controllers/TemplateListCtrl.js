@@ -82,13 +82,15 @@ function TemplateListCtrl($scope, HarveyContext, NavigationSvc) {
 	};
 
 	$scope.createRequestTemplate = function() {
-		$scope.context.currentRequestTemplate = {};
+		$scope.context.currentTemplate = {};
+		$scope.context.currentTemplateType = 'Request';
 
 		NavigationSvc.navigate('Template');
 	};
 
 	$scope.editRequestTemplate = function(index) {
-		$scope.context.currentRequestTemplate = $scope.filteredRequestTemplates[index];
+		$scope.context.currentTemplate = $scope.filteredRequestTemplates[index];
+		$scope.context.currentTemplateType = 'Request';
 
 		NavigationSvc.navigate('Template');
 	};
@@ -114,6 +116,20 @@ function TemplateListCtrl($scope, HarveyContext, NavigationSvc) {
 				});
 			}, 500);
 		}
+	};
+
+	$scope.createResponseTemplate = function() {
+		$scope.context.currentTemplate = {};
+		$scope.context.currentTemplateType = 'Response';
+
+		NavigationSvc.navigate('Template');
+	};
+
+	$scope.editResponseTemplate = function(index) {
+		$scope.context.currentTemplate = $scope.filteredResponseTemplates[index];
+		$scope.context.currentTemplateType = 'Response';
+
+		NavigationSvc.navigate('Template');
 	};
 
 	$scope.deleteResponseTemplate = function(index) {

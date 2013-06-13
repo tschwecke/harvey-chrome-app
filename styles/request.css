@@ -37,12 +37,6 @@
 	#requestContainer .qs-name, #requestContainer .header-name {
 		width: 100px;
 	}
-	#requestContainer .templateName {
-		margin: 2px;
-		padding: 3px;
-		border-radius: 5px;
-		background-color: lightblue;
-	}
 
 	#requestContainer .header {
 		font-size: 18px;
@@ -80,7 +74,7 @@
 	}
 
 	#requestContainer .placeholder {
-		color: #cccccc;
+		color: #999999;
 	}
 
 	#requestContainer .placeholder option {

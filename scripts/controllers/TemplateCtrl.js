@@ -1,7 +1,9 @@
-function TemplateCtrl($scope, HarveyContext, RequestContext, NavigationSvc) {
+function TemplateCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc) {
 
 	$scope.state = '';
-	$scope.template = HarveyContext.currentRequestTemplate;
+	$scope.template = HarveyContext.currentTemplate;
+	$scope.id = $scope.template.id;
+	$scope.templateType = HarveyContext.currentTemplateType;
 
 
 	NavigationSvc.setNavigateAwayCallback(function() {
@@ -14,99 +16,42 @@ function TemplateCtrl($scope, HarveyContext, RequestContext, NavigationSvc) {
 		});
 	}, 1);
 
-	var createRequestFromTemplate = function(template) {
-		var request = {};
-
-		request.method = { "value": template.method };
-		request.protocol = { "value": template.protocol };
-		request.host = { "value": template.host };
-		request.port = { "value": template.port };
-		request.resource = { "value": template.resource };
-		request.body = { "value": template.body };
-
-		request.headers = [];
-		if(template.headers) {
-			for(var headerName in template.headers) {
-				request.headers.push({
-					"key": headerName,
-					"value": template.headers[headerName]
-				});
-			}
-		}
-
-		request.querystring = [];
-		if(template.querystring) {
-			for(var qsName in template.querystring) {
-				request.querystring.push({
-					"key": qsName,
-					"value": template.querystring[qsName]
-				});
-			}
-		}
-
-		return request;
-	};
-
-	var populateTemplateWithRequest = function(template, request) {
-		if(request.method.value)	template.method = request.method.value;
-		if(request.protocol.value)	template.protocol = request.protocol.value;
-		if(request.host.value)		template.host = request.host.value;
-		if(request.port.value)		template.port = request.port.value;
-		if(request.resource.value)	template.resource = request.resource.value;
-		if(request.body.value)		template.body = request.body.value;
-
-		template.querystring = {};
-		if(request.querystring) {
-			for(var i=0; i<request.querystring.length; i++) {
-				var querystring = request.querystring[i];
-				template.querystring[querystring.key] = querystring.value;
-			}
-		}
-		template.headers = {};
-		if(request.headers) {
-			for(var i=0; i<request.headers.length; i++) {
-				var header = request.headers[i];
-				template.headers[header.key] = header.value;
-			}
-		}
-	};
-
-	RequestContext.currentRequest = createRequestFromTemplate(HarveyContext.currentRequestTemplate);
-	$scope.request = RequestContext.currentRequest;
+	if(HarveyContext.currentTemplateType === 'Request') {
+		RequestSvc.setRequestFromTemplate(HarveyContext.currentTemplate);
+		$scope.requestOrResponse = RequestSvc.currentRequest;
+	}
+	else {
+		ResponseSvc.setResponseFromTemplate(HarveyContext.currentTemplate);
+		$scope.requestOrResponse = ResponseSvc.currentResponse;
+	}
 	$scope.changed = false;
 
-	var originalRequest = null;
-	$scope.$watch('request', function(newValue, oldValue) {
-		if(!originalRequest) {
-			originalRequest = JSON.stringify(newValue);
+	var originalValue = null;
+	$scope.$watch('requestOrResponse', function(newValue, oldValue) {
+		if(!originalValue) {
+			originalValue = JSON.stringify(newValue);
 		}
 		
-		var currentRequest = JSON.stringify(newValue);
-		$scope.changed = (originalRequest !== currentRequest);
+		var currentValue = JSON.stringify(newValue);
+		$scope.changed = (originalValue !== currentValue);
 	}, true);
 
-	$scope.$watch('template.id', function(newValue, oldValue) {
+	$scope.$watch('id', function(newValue, oldValue) {
 		$scope.changed = (newValue !== oldValue);
 	});
 
 
-	$scope.save = function() {
-		populateTemplateWithRequest($scope.template, $scope.request);
-
-		//Look to see if this template is already stored
-		var templates = HarveyContext.data.requestTemplates;
-		var found = false;
-		for(var i=0; i<templates.length; i++) {
-			if(templates[i] == $scope.template) {
-				found = true;
-				break;
-			}
+	$scope.keep = function() {
+		$scope.template.id = $scope.id;
+		if(HarveyContext.currentTemplateType === 'Request') {
+			RequestSvc.populateTemplateWithRequest($scope.template);
+			RequestSvc.addIfNew(HarveyContext.data.requestTemplates, $scope.template);
+		}
+		else {
+			ResponseSvc.populateTemplateWithResponse($scope.template);
+			ResponseSvc.addIfNew(HarveyContext.data.responseTemplates, $scope.template);
 		}
 		
-		if(!found) {
-			templates.push($scope.template);
-		}
-
 		NavigationSvc.navigate('TemplateList');
 	};
 

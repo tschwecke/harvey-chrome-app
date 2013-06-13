@@ -1,13 +1,10 @@
+ 
 
-function RequestCtrl($scope, RequestSvc) {
+function ResponseCtrl($scope, ResponseSvc) {
 	var _colors = ['#E7FAFA', 'lightyellow', 'lightgreen', 'lightred'];
-	$scope.request = RequestSvc.currentRequest;
+	$scope.response = ResponseSvc.currentResponse;
 	$scope.validjson = true;
 	$scope.changed = false;
-	$scope.methodEmpty = !$scope.request.method.value;
-	$scope.methodPlaceholder = $scope.methodEmpty ? 'Method' : '';
-	$scope.protocolEmpty = !$scope.request.protocol.value;
-	$scope.protocolPlaceholder = $scope.protocolEmpty ? 'Protocol' : '';
 
 
 	$scope.getColor = function(index) {
@@ -34,46 +31,22 @@ function RequestCtrl($scope, RequestSvc) {
 
 
 	$scope.addHeader = function() {
-		if(!$scope.request.headers) $scope.request.headers = [];
+		if(!$scope.response.headers) $scope.response.headers = [];
 
-		$scope.request.headers.push({'key': '', 'value': ''});
+		$scope.response.headers.push({'key': '', 'value': ''});
 	}
 
 	$scope.removeHeader = function(index) {
-		$scope.request.headers.splice(index, 1);
-	}
-
-	$scope.addQuerystring = function() {
-		if(!$scope.request.querystring) $scope.request.querystring = [];
-
-		$scope.request.querystring.push({'key': '', 'value': ''});
-	}
-
-	$scope.removeQuerystring = function(index) {
-		delete $scope.request.querystring.splice(index, 1);
+		$scope.response.headers.splice(index, 1);
 	}
 
 	$scope.formatBody = function() {
-		$scope.request.body.value = beautify($scope.request.body.value);
+		$scope.response.body.value = beautify($scope.response.body.value);
 	};
 
 	$scope.updateModelWithBody = function(bodyText) {
-		$scope.request.body.value = bodyText;
+		$scope.response.body.value = bodyText;
 	}
-
-	$scope.methodChanged = function() {
-		$scope.methodEmpty = !$scope.request.method.value;
-		$scope.methodPlaceholder = $scope.methodEmpty ? 'Method' : '';
-
-		$scope.updateBgColor($scope.request.method);
-	};
-
-	$scope.protocolChanged = function() {
-		$scope.protocolEmpty = !$scope.request.protocol.value;
-		$scope.protocolPlaceholder = $scope.protocolEmpty ? 'Protocol' : '';
-
-		$scope.updateBgColor($scope.request.protocol);
-	};
 
 
 	var doGetCaretPosition = function(ctrl) {
@@ -101,7 +74,7 @@ function RequestCtrl($scope, RequestSvc) {
 	var setEditorHeight = function(editor) {
 			var lineCount = editor.session.getLength();
 			if(lineCount < 5) lineCount = 5;
-			document.getElementById('requestBody').style.height = (lineCount * 15) + 'px';
+			document.getElementById('responseBody').style.height = (lineCount * 15) + 'px';
 			editor.resize();
 	};
 
@@ -139,7 +112,7 @@ function RequestCtrl($scope, RequestSvc) {
 			}
 		});
 
-		editor = ace.edit("requestBody");
+		editor = ace.edit("responseBody");
 		//editor.setReadOnly(true);
 		editor.renderer.setShowGutter(false);
 		editor.setHighlightActiveLine(false);
@@ -171,13 +144,13 @@ function RequestCtrl($scope, RequestSvc) {
 
 
 	}
-	wireupForm($scope, $scope.request.body.value, $scope.updateModelWithBody);
+	wireupForm($scope, $scope.response.body.value, $scope.updateModelWithBody);
 
 	//Assign template colors
 	$scope.color = {};
-	if($scope.request.templates) {
-		for(var i=0; i<$scope.request.templates.length; i++) {
-			$scope.color[$scope.request.templates[i]] = _colors[i];
+	if($scope.response.templates) {
+		for(var i=0; i<$scope.response.templates.length; i++) {
+			$scope.color[$scope.response.templates[i]] = _colors[i];
 		}
 	}
 
@@ -185,4 +158,4 @@ function RequestCtrl($scope, RequestSvc) {
 
 
 
- 
+

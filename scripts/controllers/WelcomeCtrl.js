@@ -4,10 +4,13 @@ function WelcomeCtrl($scope, HarveyContext, NavigationSvc) {
 	$scope.context = HarveyContext;
 
 	NavigationSvc.setNavigateAwayCallback(function() {
-		$scope.state = 'fading';
-
+		$scope.$apply(function() {
+			$scope.state = 'fading';
+		});
 		setTimeout(function() {
-			$scope.state = 'hidden';
+			$scope.$apply(function() {
+				$scope.state = 'hidden';
+			});
 		}, 300);
 	});
 
@@ -20,7 +23,7 @@ function WelcomeCtrl($scope, HarveyContext, NavigationSvc) {
 					HarveyContext.data = JSON.parse(fileContents);
 
 					if(!HarveyContext.data.requestTemplates)	HarveyContext.data.requestTemplates = [];
-					if(!HarveyContext.data.reesponseTemplates)	HarveyContext.data.responseTemplates = [];
+					if(!HarveyContext.data.responseTemplates)	HarveyContext.data.responseTemplates = [];
 					if(!HarveyContext.data.setupAndTeardowns)	HarveyContext.data.setupAndTeardowns = [];
 					if(!HarveyContext.data.tests)				HarveyContext.data.tests = [];
 
@@ -36,7 +39,7 @@ function WelcomeCtrl($scope, HarveyContext, NavigationSvc) {
 
 	$scope.startFromScratch = function() {
 		if(!HarveyContext.data.requestTemplates)	HarveyContext.data.requestTemplates = [];
-		if(!HarveyContext.data.reesponseTemplates)	HarveyContext.data.responseTemplates = [];
+		if(!HarveyContext.data.responseTemplates)	HarveyContext.data.responseTemplates = [];
 		if(!HarveyContext.data.setupAndTeardowns)	HarveyContext.data.setupAndTeardowns = [];
 		if(!HarveyContext.data.tests)				HarveyContext.data.tests = [];
 

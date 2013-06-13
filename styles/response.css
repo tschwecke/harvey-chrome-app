@@ -1,0 +1,63 @@
+ 
+
+	#responseContainer {
+		text-align: left;
+	}
+
+	#responseContainer .container {
+		max-width: 500px;
+	}
+
+	#responseContainer .statusCode {
+		width: 80px;
+	}
+
+	#responseContainer .responseBody {
+		height: 75px;
+		width: 100%;
+		border-radius: 4px;
+		border-color: rgb(204, 204, 204);
+		border-style: solid;
+		border-width: 1px;
+	}
+	#responseContainer .invalidjson {
+		display: none;
+	}
+	#responseContainer .header-name {
+		width: 100px;
+	}
+
+	#responseContainer .header {
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: bold;
+		margin-top: 5px;
+	}
+	#responseContainer .empty {
+		font-weight: bold;
+		color: #CCCCCC;
+	}
+
+	#responseContainer i {
+		vertical-align: baseline;
+		opacity: .65;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+
+	#responseContainer i:hover {
+		opacity: 1;
+	}
+
+	#responseContainer .bodyTools {
+		float: right;
+	}
+
+	#responseContainer .ace_scrollbar, #responseContainer .ace_print-margin {
+		display: none !important;
+	}
+
+	#responseContainer .inline {
+		display: inline-block;
+	}
+

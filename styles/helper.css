@@ -1,0 +1,43 @@
+
+
+	#helperContainer.fadeInHelper{
+		opacity: 1.0;
+	}
+
+	#helperContainer {
+		padding-left: 25px;
+		padding-right: 35px;
+		opacity: 0;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+	
+	#helperContainer .id {
+		width: 300px;
+		text-align: center;
+		font-weight: bold;
+		margin-bottom: 15px;
+	}
+
+
+
+	#helperContainer .helperRequestContainer {
+		float: left;
+	}
+	
+	#helperContainer .helperResponseContainer {
+		float: right;
+	}
+	
+	#helperContainer .helperActionContainer {
+		clear: both;
+	}
+
+
+
+	#helperContainer .header {
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}
