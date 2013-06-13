@@ -85,6 +85,10 @@ function TemplateCtrl($scope, HarveyContext, RequestContext, NavigationSvc) {
 		$scope.changed = (originalRequest !== currentRequest);
 	}, true);
 
+	$scope.$watch('template.id', function(newValue, oldValue) {
+		$scope.changed = (newValue !== oldValue);
+	});
+
 
 	$scope.save = function() {
 		populateTemplateWithRequest($scope.template, $scope.request);
