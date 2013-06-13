@@ -43,7 +43,33 @@
 		line-height: 20px;
 		font-weight: bold;
 		margin-top: 5px;
+		margin-bottom: 2px;
 	}
+
+	#requestContainer .inline {
+		display: inline-block;
+	}
+
+	#requestContainer .templateName {
+		display: inline-block;
+		border-radius: 4px;
+		padding: 2px;
+		margin: 2px;
+		border: solid 1px #CCCCCC;
+	}
+	
+	#requestContainer .templateName i {
+		opacity: 0;
+	}
+
+	#requestContainer .templateName:hover i {
+		opacity: .7;
+	}
+
+	#requestContainer .templatesContainer {
+		margin-bottom: 15px;
+	}
+
 	#requestContainer .empty {
 		font-weight: bold;
 		color: #CCCCCC;

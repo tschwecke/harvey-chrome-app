@@ -213,8 +213,18 @@
 <script type="text/ng-template" id="Request">
 
 	<div id="requestContainer" ng-controller="RequestCtrl">
+		<div class="container templatesContainer">
+			<div class="header">Templates  <i class="icon-plus" ng-click="addTemplate()"></i></div>
+			<div ng-repeat="template in request.templates" class="templateName" style="background-color: {{getColor($index)}};">
+				<i class="icon-move"></i>
+				{{template}}
+				<i class="icon-trash" ng-click="removeTemplate($index)"></i>
+			</div>
+			<div ng-show="!request.templates" class="empty inline">None</div>
+		</div>
+	
 		<div class="container">
-			<select id="method" ng-class="{method: true, placeholder: methodEmpty}" ng-model="request.method.value" ng-change="methodChanged()" ng-style="{'background-color': request.method.bgcolor}">
+			<select id="method" ng-class="{method: true, placeholder: methodEmpty}" ng-model="request.method.value" ng-change="methodChanged()" ng-style="{'background-color': color[request.method.inheritedFrom]}">
 				<option value='' ng-disabled="methodEmpty" ng-class="{hide: methodEmpty}">{{methodPlaceholder}}</option>
 				<option>GET</option>
 				<option>POST</option>
@@ -223,13 +233,13 @@
 				<option>HEAD</option>
 				<option>OPTIONS</option>
 			</select>
-			<select id="protocol" ng-class="{protocol: true, placeholder: protocolEmpty}" ng-model="request.protocol.value" ng-change="protocolChanged()" ng-style="{'background-color': request.protocol.bgcolor}">
+			<select id="protocol" ng-class="{protocol: true, placeholder: protocolEmpty}" ng-model="request.protocol.value" ng-change="protocolChanged()" ng-style="{'background-color': color[request.protocol.inheritedFrom]}">
 				<option value='' ng-disabled="protocolEmpty" ng-class="{hide: protocolEmpty}">{{protocolPlaceholder}}</option>
 				<option value="http">http://</option>
 				<option value="https">https://</option>
 			</select>
-			<input type="text" id="host" class="host" placeholder="Host" ng-model="request.host.value" ng-change="updateBgColor(request.host)" ng-style="{'background-color': request.host.bgcolor}" />
-			<input type="text" id="resource" class="resource" placeholder="Resource" data-provide="typeahead" ng-model="request.resource.value" ng-change="updateBgColor(request.resource)" ng-style="{'background-color': request.resource.bgcolor}" />
+			<input type="text" id="host" class="host" placeholder="Host" ng-model="request.host.value" ng-change="updateBgColor(request.host)" ng-style="{'background-color': color[request.host.inheritedFrom]}" />
+			<input type="text" id="resource" class="resource" placeholder="Resource" data-provide="typeahead" ng-model="request.resource.value" ng-change="updateBgColor(request.resource)" ng-style="{'background-color': color[request.resource.inheritedFrom]}" />
 		</div>
 		<div class="container">
 			<div class="header">Querystring <i class="icon-plus" ng-click="addQuerystring()"></i></div>
@@ -242,8 +252,8 @@
 		<div class="container">
 			<div class="header">Headers <i class="icon-plus" ng-click="addHeader()"></i></div>
 			<div ng-repeat="header in request.headers">
-				<input type="text" class="header-name" placeholder="Header Name" ng-model="header.key" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': header.bgcolor}" />:
-				<input type="text" class="header-value" placeholder="Header Value"  ng-model="header.value" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': header.bgcolor}" />
+				<input type="text" class="header-name" placeholder="Header Name" ng-model="header.key" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': color[header.inheritedFrom]}" />:
+				<input type="text" class="header-value" placeholder="Header Value"  ng-model="header.value" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': color[header.inheritedFrom]}" />
 				<i class="icon-trash" ng-click="removeHeader($index)"></i>
 			</div>
 			<div ng-show="!request.headers.length" class="empty">None</div>

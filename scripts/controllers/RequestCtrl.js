@@ -33,6 +33,12 @@ function RequestCtrl($scope, RequestSvc) {
 	}
 
 
+	$scope.removeTemplate = function(index) {
+		delete $scope.request.templates.splice(index, 1);
+
+		assignTemplateColors();
+	}
+
 	$scope.addHeader = function() {
 		if(!$scope.request.headers) $scope.request.headers = [];
 
@@ -174,12 +180,15 @@ function RequestCtrl($scope, RequestSvc) {
 	wireupForm($scope, $scope.request.body.value, $scope.updateModelWithBody);
 
 	//Assign template colors
-	$scope.color = {};
-	if($scope.request.templates) {
-		for(var i=0; i<$scope.request.templates.length; i++) {
-			$scope.color[$scope.request.templates[i]] = _colors[i];
+	var assignTemplateColors = function() {
+		$scope.color = {};
+		if($scope.request.templates) {
+			for(var i=0; i<$scope.request.templates.length; i++) {
+				$scope.color[$scope.request.templates[i]] = _colors[i];
+			}
 		}
-	}
+	};
+	assignTemplateColors();
 
 }
 

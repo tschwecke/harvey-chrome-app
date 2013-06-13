@@ -111,22 +111,22 @@ app.factory('RollupSvc', function() {
 			}
 
 			if(request.method) {
-				rolledUpRequest.method = { "value": request.method, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+				rolledUpRequest.method.value = request.method;
 			}
 			if(request.protocol) {
-				rolledUpRequest.protocol = { "value": request.protocol, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+				rolledUpRequest.protocol.value = request.protocol;
 			}
 			if(request.host) {
-				rolledUpRequest.host = { "value": request.host, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+				rolledUpRequest.host.value = request.host;
 			}
 			if(request.port) {
-				rolledUpRequest.port = { "value": request.port, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+				rolledUpRequest.port.value = request.port;
 			}
 			if(request.resource) {
-				rolledUpRequest.resource = { "value": request.resource, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+				rolledUpRequest.resource.value = request.resource;
 			}
 			if(request.body) {
-				rolledUpRequest.body = { "value": request.body, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+				rolledUpRequest.body.value = request.body;
 			}
 
 			return rolledUpRequest;
@@ -250,6 +250,10 @@ app.factory('RequestSvc', function() {
 					template.headers[header.key] = header.value;
 				}
 			}
+
+			if(_self.currentRequest.templates) {
+				template.templates = _self.currentRequest.templates;
+			}
 		};
 
 		this.addIfNew = function(templates, template) {
@@ -308,6 +312,10 @@ app.factory('ResponseSvc', function() {
 					var header = _self.currentResponse.headers[i];
 					template.headers[header.key] = header.value;
 				}
+			}
+
+			if(_self.currentResponse.templates) {
+				template.templates = _self.currentResponse.templates;
 			}
 		};
 
