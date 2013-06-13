@@ -290,5 +290,33 @@
 	</div>
 	
 </script>
+
+<script type="text/ng-template" id="Request">
+
+	<div id="responseContainer" ng-controller="ResponseCtrl">
+		<div class="container">
+			<input type="text" id="statusCode" class="statusCode" placeholder="Status Code" ng-model="response.statusCode.value" ng-change="updateBgColor(response.statusCode)" ng-style="{'background-color': response.statusCode.bgcolor}" />
+		</div>
+		<div class="container">
+			<div class="header">Headers <i class="icon-plus" ng-click="addHeader()"></i></div>
+			<div ng-repeat="header in response.headers">
+				<input type="text" class="header-name" placeholder="Header Name" ng-model="header.key" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': header.bgcolor}" />:
+				<input type="text" class="header-value" placeholder="Header Value"  ng-model="header.value" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': header.bgcolor}" />
+				<i class="icon-trash" ng-click="removeHeader($index)"></i>
+			</div>
+			<div ng-show="!response.headers.length" class="empty">None</div>
+		</div>
+		<div class="container">
+			<div class="header">Body
+				<div class="bodyTools">
+					<i id="beautify" class="icon-align-left" ng-click="formatBody()"></i>
+					<span id="invalidjson" ng-show="validjson==false" class="label label-warning">Invalid Json</span>
+				<div>
+			</div>
+		</div>
+		<div id="responseBody" class="responseBody"></div>
+	</div>
+	
+</script>
 	
 </html>
