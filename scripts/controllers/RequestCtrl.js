@@ -9,15 +9,6 @@ function RequestCtrl($scope, RequestContext) {
 	$scope.protocolEmpty = !$scope.request.protocol.value;
 	$scope.protocolPlaceholder = $scope.protocolEmpty ? 'Protocol' : '';
 
-	var originalRequest = null;
-	$scope.$watch('request', function(newValue, oldValue) {
-		if(!originalRequest) {
-			originalRequest = JSON.stringify(newValue);
-		}
-		
-		var currentRequest = JSON.stringify(newValue);
-		$scope.changed = (originalRequest !== currentRequest);
-	}, true);
 
 	$scope.getColor = function(index) {
 		return _colors[index];

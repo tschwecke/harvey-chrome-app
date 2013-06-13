@@ -15,6 +15,7 @@ app.factory('HarveyContext', function() {
 app.factory('RequestContext', function() {
 	return {
 		"currentRequest" : {},
+		"changed": false,
 		"availableVariables": []
 	};
 });

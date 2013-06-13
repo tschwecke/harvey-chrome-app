@@ -12,11 +12,11 @@
 	}
 
 	#requestContainer .protocol {
-		width: 80px;
+		width: 95px;
 	}
 
 	#requestContainer .host {
-		width: 300px;
+		width: 285px;
 	}
 
 	#requestContainer .resource {
@@ -86,15 +86,4 @@
 	#requestContainer .placeholder option {
 		color: #000000;
 	}
-
-	#requestContainer .save {
-		text-align: center;
-		margin-top: 10px;
-	}
-
-	#requestContainer .save:hover {
-		text-decoration: underline;
-	}
-
-	
 

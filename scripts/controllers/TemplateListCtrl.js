@@ -82,6 +82,18 @@ function TemplateListCtrl($scope, HarveyContext) {
 		return filterTemplates(filteredTemplates, tags);
 	};
 
+	$scope.createRequestTemplate = function() {
+		$scope.context.currentRequestTemplate = {};
+
+		$scope.state = 'fadingOut';
+		$scope.context.upcomingView = 'Template';
+		setTimeout(function() {
+			$scope.$apply(function() {
+				$scope.context.view = 'Template';
+			});
+		}, 500);
+	};
+
 	$scope.editRequestTemplate = function(index) {
 		$scope.context.currentRequestTemplate = $scope.filteredRequestTemplates[index];
 

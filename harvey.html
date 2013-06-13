@@ -163,7 +163,12 @@
 
 <script type="text/ng-template" id="Template">
 	<div id="templateContainer" ng-controller="TemplateCtrl" ng-class="{fadeInTemplate: state=='fadingIn'}">
+		<input class="id" type="text" ng-model="template.id" placeholder="Template Id"/>		
 		<div ng-include src="'Request'" ></div>
+		<div class="save" ng-show="changed">
+			<div class="btn btn-info" ng-click="save()">Save</div>
+			<div class="btn" ng-click="discard()">Discard</div>
+		</div>
 	</div>
 </script>
 
@@ -282,7 +287,6 @@
 			</div>
 		</div>
 		<div id="requestBody" class="requestBody"></div>
-		<div ng-show="changed" class="save">Save</div>
 	</div>
 	
 </script>

@@ -11,6 +11,12 @@ function WelcomeCtrl($scope, HarveyContext) {
 					//Update the tests that the TestList is pointing to
 					HarveyContext.data = JSON.parse(fileContents);
 
+					if(!HarveyContext.data.requestTemplates)	HarveyContext.data.requestTemplates = [];
+					if(!HarveyContext.data.reesponseTemplates)	HarveyContext.data.responseTemplates = [];
+					if(!HarveyContext.data.setupAndTeardowns)	HarveyContext.data.setupAndTeardowns = [];
+					if(!HarveyContext.data.tests)				HarveyContext.data.tests = [];
+
+
 					HarveyContext.filteredTests = HarveyContext.data.tests;
 				});
 
@@ -31,6 +37,12 @@ function WelcomeCtrl($scope, HarveyContext) {
 	};
 
 	$scope.startFromScratch = function() {
+		if(!HarveyContext.data.requestTemplates)	HarveyContext.data.requestTemplates = [];
+		if(!HarveyContext.data.reesponseTemplates)	HarveyContext.data.responseTemplates = [];
+		if(!HarveyContext.data.setupAndTeardowns)	HarveyContext.data.setupAndTeardowns = [];
+		if(!HarveyContext.data.tests)				HarveyContext.data.tests = [];
+
+
 		setTimeout(function() {
 			$scope.$apply(function() {
 				$scope.state = 'fading';
