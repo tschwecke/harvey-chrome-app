@@ -1,5 +1,5 @@
  
-function TestListCtrl($scope, HarveyContext) {
+function TestListCtrl($scope, HarveyContext, NavigationSvc) {
 
 
 	$scope.context = HarveyContext;
@@ -8,9 +8,8 @@ function TestListCtrl($scope, HarveyContext) {
 	$scope.searchString = "";
 	$scope.state = '';
 
-	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
-		if (newValue != 'TestList')
-			$scope.state = 'fadingOut';
+	NavigationSvc.setNavigateAwayCallback(function() {
+		$scope.state = 'fadingOut';
 	});
 
 	setTimeout(function() {
@@ -55,15 +54,7 @@ function TestListCtrl($scope, HarveyContext) {
 	$scope.editTest = function(index) {
 		$scope.context.currentTest = $scope.filteredTests[index];
 
-		console.log('edit clicked for ' + $scope.context.currentTest.id);
-
-		$scope.state = 'fadingOut';
-		$scope.context.upcomingView = 'Test';
-		setTimeout(function() {
-			$scope.$apply(function() {
-				$scope.context.view = 'Test';
-			});
-		}, 500);
+		NavigationSvc.navigate('Test');
 	};
 
 	$scope.deleteTest = function(index) {

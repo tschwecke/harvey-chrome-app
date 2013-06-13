@@ -1,4 +1,4 @@
-function TemplateListCtrl($scope, HarveyContext) {
+function TemplateListCtrl($scope, HarveyContext, NavigationSvc) {
 
 	$scope.state = '';
 	$scope.context = HarveyContext;
@@ -8,9 +8,8 @@ function TemplateListCtrl($scope, HarveyContext) {
 	$scope.allResponseTemplates = $scope.context.data.responseTemplates;
 	$scope.searchString = "";
 
-	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
-		if (newValue != 'TemplateList')
-			$scope.state = 'fadingOut';
+	NavigationSvc.setNavigateAwayCallback(function() {
+		$scope.state = 'fadingOut';
 	});
 
 	setTimeout(function() {
@@ -85,25 +84,13 @@ function TemplateListCtrl($scope, HarveyContext) {
 	$scope.createRequestTemplate = function() {
 		$scope.context.currentRequestTemplate = {};
 
-		$scope.state = 'fadingOut';
-		$scope.context.upcomingView = 'Template';
-		setTimeout(function() {
-			$scope.$apply(function() {
-				$scope.context.view = 'Template';
-			});
-		}, 500);
+		NavigationSvc.navigate('Template');
 	};
 
 	$scope.editRequestTemplate = function(index) {
 		$scope.context.currentRequestTemplate = $scope.filteredRequestTemplates[index];
 
-		$scope.state = 'fadingOut';
-		$scope.context.upcomingView = 'Template';
-		setTimeout(function() {
-			$scope.$apply(function() {
-				$scope.context.view = 'Template';
-			});
-		}, 500);
+		NavigationSvc.navigate('Template');
 	};
 
 	$scope.deleteRequestTemplate = function(index) {

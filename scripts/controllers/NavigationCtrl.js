@@ -1,18 +1,15 @@
  
-function NavigationCtrl($scope, HarveyContext) {
+function NavigationCtrl($scope, HarveyContext, NavigationSvc) {
 
 	$scope.state = 'ready';
-	$scope.context = HarveyContext;
+	$scope.navigation = NavigationSvc;
 	$scope.selectedMenu = 'tests';
+
+	NavigationSvc.setNavigationScope($scope);
 
 	$scope.menuSelected  = function(menu, view) {
 		$scope.selectedMenu = menu;
-		$scope.context.upcomingView = view;
 
-		setTimeout(function() {
-			$scope.$apply(function() {
-				$scope.context.view = view;
-			});
-		}, 300);
+		NavigationSvc.navigate(view);
 	};
 }

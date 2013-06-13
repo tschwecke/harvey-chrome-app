@@ -1,13 +1,12 @@
-function TemplateCtrl($scope, HarveyContext, RequestContext) {
+function TemplateCtrl($scope, HarveyContext, RequestContext, NavigationSvc) {
 
 	$scope.state = '';
 	$scope.template = HarveyContext.currentRequestTemplate;
 
-	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
-		if (newValue != 'Template')
-			$scope.state = 'fadingOut';
-	});
 
+	NavigationSvc.setNavigateAwayCallback(function() {
+		$scope.state = 'fadingOut';
+	});
 
 	setTimeout(function() {
 		$scope.$apply(function() {
@@ -104,22 +103,11 @@ function TemplateCtrl($scope, HarveyContext, RequestContext) {
 			templates.push($scope.template);
 		}
 
-		HarveyContext.upcomingView = 'TemplateList';
-		setTimeout(function() {
-			$scope.$apply(function() {
-				HarveyContext.view = 'TemplateList';
-			});
-		}, 500);
+		NavigationSvc.navigate('TemplateList');
 	};
 
 	$scope.discard = function() {
-		HarveyContext.upcomingView = 'TemplateList';
-		setTimeout(function() {
-			$scope.$apply(function() {
-				HarveyContext.view = 'TemplateList';
-			});
-		}, 500);
-
+		NavigationSvc.navigate('TemplateList');
 	};
 }
 

@@ -1,7 +1,15 @@
-function WelcomeCtrl($scope, HarveyContext) {
+function WelcomeCtrl($scope, HarveyContext, NavigationSvc) {
 
 	$scope.state = 'ready';
 	$scope.context = HarveyContext;
+
+	NavigationSvc.setNavigateAwayCallback(function() {
+		$scope.state = 'fading';
+
+		setTimeout(function() {
+			$scope.state = 'hidden';
+		}, 300);
+	});
 
 	$scope.openFile = function() {
 
@@ -16,21 +24,11 @@ function WelcomeCtrl($scope, HarveyContext) {
 					if(!HarveyContext.data.setupAndTeardowns)	HarveyContext.data.setupAndTeardowns = [];
 					if(!HarveyContext.data.tests)				HarveyContext.data.tests = [];
 
-
 					HarveyContext.filteredTests = HarveyContext.data.tests;
 				});
-
+				
 				setTimeout(function() {
-					$scope.$apply(function() {
-						$scope.state = 'fading';
-					});
-
-					setTimeout(function() {
-						$scope.$apply(function() {
-							$scope.context.view = 'TestList';
-						});
-					}, 500);
-
+					NavigationSvc.navigate('TestList');
 				}, 100);
 			}
 		});
@@ -44,16 +42,7 @@ function WelcomeCtrl($scope, HarveyContext) {
 
 
 		setTimeout(function() {
-			$scope.$apply(function() {
-				$scope.state = 'fading';
-			});
-
-			setTimeout(function() {
-				$scope.$apply(function() {
-					$scope.context.view = 'TestList';
-				});
-			}, 500);
-
+			NavigationSvc.navigate('TestList');
 		}, 100);
 	};
 

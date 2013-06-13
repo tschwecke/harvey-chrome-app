@@ -19,3 +19,35 @@ app.factory('RequestContext', function() {
 		"availableVariables": []
 	};
 });
+
+app.factory('NavigationSvc', function() {
+	var constructor = function() {
+		var _callback = null;
+		var _navigationScope = null;
+		var _self = this;
+
+		this.view = null;
+
+		this.navigate = function(view) {
+			if(_callback) {
+				_callback();
+			}
+			setTimeout(function() {
+				_navigationScope.$apply(function() {
+					_self.view = view;
+				});
+			}, 300);
+			
+		};
+
+		this.setNavigateAwayCallback = function(callback) {
+			_callback = callback;
+		};
+
+		this.setNavigationScope = function(navigationScope) {
+			_navigationScope = navigationScope;
+		};
+	};
+
+	return new constructor();
+});

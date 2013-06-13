@@ -1,4 +1,4 @@
-function HelperListCtrl($scope, HarveyContext) {
+function HelperListCtrl($scope, HarveyContext, NavigationSvc) {
 
 	$scope.state = '';
 	$scope.context = HarveyContext;
@@ -6,9 +6,8 @@ function HelperListCtrl($scope, HarveyContext) {
 	$scope.filteredHelpers = $scope.context.data.setupAndTeardowns;
 	$scope.searchString = "";
 
-	$scope.$watch('context.upcomingView', function(newValue, oldValue) {
-		if (newValue != 'HelperList')
-			$scope.state = 'fadingOut';
+	NavigationSvc.setNavigateAwayCallback(function() {
+		$scope.state = 'fadingOut';
 	});
 
 	setTimeout(function() {

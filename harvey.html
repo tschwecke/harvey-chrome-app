@@ -15,7 +15,7 @@
 	<link href="styles/request.css" rel="stylesheet" />
 </head>
 <body ng-controller="NavigationCtrl">
-	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="{fadeWelcome: state=='fading', hideWelcome: context.view!='Welcome'}">
+	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="{fadeWelcome: state=='fading', hideWelcome: state=='hidden'}">
 		<h2 class="header">Welcome to Harvey</h2>
 		<div class="welcomeContainer">
 			<div id="open" ng-click="openFile()" ng-class="'welcomeButton openfile' + openClicked" ng-mousedown="openClicked=' clickTest'" ng-mouseup="openClicked=''"><div class="centerText">Open Existing Tests</div></div>
@@ -40,7 +40,7 @@
 
 	<div class="itemContainer">
 	
-		<div ng-include src="context.view" ></div>
+		<div ng-include src="navigation.view" ></div>
 		
 	</div>
 </body>
