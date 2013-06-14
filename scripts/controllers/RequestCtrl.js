@@ -1,6 +1,6 @@
 
-function RequestCtrl($scope, RequestSvc) {
-	var _colors = ['#E7FAFA', 'lightyellow', 'lightgreen', 'lightred'];
+function RequestCtrl($scope, HarveyContext, RequestSvc) {
+	var _colors = ['#E7FAFA', 'lightyellow', 'lightgreen', 'red'];
 	$scope.request = RequestSvc.currentRequest;
 	$scope.validjson = true;
 	$scope.changed = false;
@@ -9,29 +9,48 @@ function RequestCtrl($scope, RequestSvc) {
 	$scope.protocolEmpty = !$scope.request.protocol.value;
 	$scope.protocolPlaceholder = $scope.protocolEmpty ? 'Protocol' : '';
 
-
 	$scope.getColor = function(index) {
 		return _colors[index];
 	}
 
-	$scope.updateBgColor = function(field) {
+
+	$scope.getBgColor = function(field) {
+		var bgcolor = '';
 		if(field.value == field.inheritedValue) {
-			field.bgcolor = $scope.color[field.inheritedFrom] || '';
+			bgcolor = $scope.color[field.inheritedFrom] || '';
 		}
-		else {
-			field.bgcolor = '';
-		}
+
+		return bgcolor;
 	}
 
-	$scope.updateHeaderBgColor = function(field) {
+	$scope.getHeaderBgColor = function(field) {
+		var bgcolor = '';
 		if(field.key == field.inheritedKey && field.value == field.inheritedValue) {
-			field.bgcolor = $scope.color[field.inheritedFrom] || '';
+			bgcolor = $scope.color[field.inheritedFrom] || '';
 		}
-		else {
-			field.bgcolor = '';
-		}
+
+		return bgcolor;
 	}
 
+	//Need to do this workaround since angular doesn't support keypresses very well
+	$(document).keypress(function(e) {
+		if(e.which == 13) {
+			$scope.$apply(function() {
+				$scope.addTemplate();
+			});
+		}
+	});
+	
+	$scope.addTemplate = function() {
+		if($scope.newTemplateId) {
+			//Need to do this workaround for getting the value since angular and the bootstrap typeahead don't mix well
+			var newTemplateId = $('#newRequestTemplateId').val();
+			$scope.request.templates.push(newTemplateId);
+			$scope.newTemplateId = '';
+		}
+		
+		$scope.showAddRequestTemplate = false;
+	};
 
 	$scope.removeTemplate = function(index) {
 		delete $scope.request.templates.splice(index, 1);
@@ -70,15 +89,11 @@ function RequestCtrl($scope, RequestSvc) {
 	$scope.methodChanged = function() {
 		$scope.methodEmpty = !$scope.request.method.value;
 		$scope.methodPlaceholder = $scope.methodEmpty ? 'Method' : '';
-
-		$scope.updateBgColor($scope.request.method);
 	};
 
 	$scope.protocolChanged = function() {
 		$scope.protocolEmpty = !$scope.request.protocol.value;
 		$scope.protocolPlaceholder = $scope.protocolEmpty ? 'Protocol' : '';
-
-		$scope.updateBgColor($scope.request.protocol);
 	};
 
 
@@ -115,8 +130,17 @@ function RequestCtrl($scope, RequestSvc) {
 
 		if(_.isObject(bodyText)) bodyText = js_beautify(JSON.stringify(bodyText));
 
+		var templateIds = [];
+		for(var i=0; i<HarveyContext.data.requestTemplates.length; i++) {
+			templateIds.push(HarveyContext.data.requestTemplates[i].id);
+		}
+		
+		$('#newRequestTemplateId').typeahead({
+			"source": templateIds
+		});
+
 		$('#resource').typeahead({
-			"source": $scope.availableVariables,
+			"source":["courseId", "courseItemId", "userId", "gradeId"],
 			"matcher": function(item) {
 				var cursorPosition = doGetCaretPosition(document.getElementById('resource'));
 				var braceOpenPosition = this.query.lastIndexOf('${', cursorPosition);

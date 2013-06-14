@@ -214,17 +214,20 @@
 
 	<div id="requestContainer" ng-controller="RequestCtrl">
 		<div class="container templatesContainer">
-			<div class="header">Templates  <i class="icon-plus" ng-click="addTemplate()"></i></div>
+			<div class="header">Templates  <i class="icon-plus" ng-click="showAddRequestTemplate=true"></i></div>
 			<div ng-repeat="template in request.templates" class="templateName" style="background-color: {{getColor($index)}};">
 				<i class="icon-move"></i>
 				{{template}}
 				<i class="icon-trash" ng-click="removeTemplate($index)"></i>
 			</div>
-			<div ng-show="!request.templates" class="empty inline">None</div>
+			<div class="newTemplateIdContainer" ng-show="showAddRequestTemplate">
+				<input id="newRequestTemplateId" class="newTemplateId" type="text" placeholder="Template Id" data-provide="typeahead" ng-model="newTemplateId" />
+			</div>
+			<div ng-show="!request.templates.length" class="empty inline">None</div>
 		</div>
 	
 		<div class="container">
-			<select id="method" ng-class="{method: true, placeholder: methodEmpty}" ng-model="request.method.value" ng-change="methodChanged()" ng-style="{'background-color': color[request.method.inheritedFrom]}">
+			<select id="method" ng-class="{method: true, placeholder: methodEmpty}" ng-model="request.method.value" ng-change="methodChanged()" ng-style="{'background-color': getBgColor(request.method)}">
 				<option value='' ng-disabled="methodEmpty" ng-class="{hide: methodEmpty}">{{methodPlaceholder}}</option>
 				<option>GET</option>
 				<option>POST</option>
@@ -233,13 +236,13 @@
 				<option>HEAD</option>
 				<option>OPTIONS</option>
 			</select>
-			<select id="protocol" ng-class="{protocol: true, placeholder: protocolEmpty}" ng-model="request.protocol.value" ng-change="protocolChanged()" ng-style="{'background-color': color[request.protocol.inheritedFrom]}">
+			<select id="protocol" ng-class="{protocol: true, placeholder: protocolEmpty}" ng-model="request.protocol.value" ng-change="protocolChanged()" ng-style="{'background-color': getBgColor(request.protocol)}">
 				<option value='' ng-disabled="protocolEmpty" ng-class="{hide: protocolEmpty}">{{protocolPlaceholder}}</option>
 				<option value="http">http://</option>
 				<option value="https">https://</option>
 			</select>
-			<input type="text" id="host" class="host" placeholder="Host" ng-model="request.host.value" ng-change="updateBgColor(request.host)" ng-style="{'background-color': color[request.host.inheritedFrom]}" />
-			<input type="text" id="resource" class="resource" placeholder="Resource" data-provide="typeahead" ng-model="request.resource.value" ng-change="updateBgColor(request.resource)" ng-style="{'background-color': color[request.resource.inheritedFrom]}" />
+			<input type="text" id="host" class="host" placeholder="Host" ng-model="request.host.value" ng-style="{'background-color': getBgColor(request.host)}" />
+			<input type="text" id="resource" class="resource" placeholder="Resource" data-provide="typeahead" ng-model="request.resource.value" ng-style="{'background-color': getBgColor(request.resource)}" />
 		</div>
 		<div class="container">
 			<div class="header">Querystring <i class="icon-plus" ng-click="addQuerystring()"></i></div>
@@ -252,8 +255,8 @@
 		<div class="container">
 			<div class="header">Headers <i class="icon-plus" ng-click="addHeader()"></i></div>
 			<div ng-repeat="header in request.headers">
-				<input type="text" class="header-name" placeholder="Header Name" ng-model="header.key" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': color[header.inheritedFrom]}" />:
-				<input type="text" class="header-value" placeholder="Header Value"  ng-model="header.value" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': color[header.inheritedFrom]}" />
+				<input type="text" class="header-name" placeholder="Header Name" ng-model="header.key" ng-style="{'background-color': getHeaderBgColor(header)}" />:
+				<input type="text" class="header-value" placeholder="Header Value"  ng-model="header.value" ng-style="{'background-color': getHeaderBgColor(header)}" />
 				<i class="icon-trash" ng-click="removeHeader($index)"></i>
 			</div>
 			<div ng-show="!request.headers.length" class="empty">None</div>
@@ -266,7 +269,7 @@
 				<div>
 			</div>
 		</div>
-		<div id="requestBody" class="requestBody"></div>
+		<div id="requestBody" class="requestBody"  ng-style="{'background-color': getBgColor(request.body)}"></div>
 	</div>
 	
 </script>
@@ -274,15 +277,27 @@
 <script type="text/ng-template" id="Response">
 
 	<div id="responseContainer" ng-controller="ResponseCtrl">
+		<div class="container templatesContainer">
+			<div class="header">Templates  <i class="icon-plus" ng-click="showAddResponseTemplate=true"></i></div>
+			<div ng-repeat="template in response.templates" class="templateName" style="background-color: {{getColor($index)}};">
+				<i class="icon-move"></i>
+				{{template}}
+				<i class="icon-trash" ng-click="removeTemplate($index)"></i>
+			</div>
+			<div class="newTemplateIdContainer" ng-show="showAddResponseTemplate">
+				<input id="newResponseTemplateId" class="newTemplateId" type="text" placeholder="Template Id" data-provide="typeahead" ng-model="newTemplateId" />
+			</div>
+			<div ng-show="!response.templates.length" class="empty inline">None</div>
+		</div>
 		<div class="container">
 			<div class="header inline">Status Code:</div>
-			<input type="text" id="statusCode" class="statusCode" placeholder="Status Code" ng-model="response.statusCode.value" ng-change="updateBgColor(response.statusCode)" ng-style="{'background-color': response.statusCode.bgcolor}" />
+			<input type="text" id="statusCode" class="statusCode" placeholder="Status Code" ng-model="response.statusCode.value" ng-style="{'background-color': getBgColor(response.statusCode)}" />
 		</div>
 		<div class="container">
 			<div class="header">Headers <i class="icon-plus" ng-click="addHeader()"></i></div>
 			<div ng-repeat="header in response.headers">
-				<input type="text" class="header-name" placeholder="Header Name" ng-model="header.key" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': header.bgcolor}" />:
-				<input type="text" class="header-value" placeholder="Header Value"  ng-model="header.value" ng-change="updateHeaderBgColor(header)" ng-style="{'background-color': header.bgcolor}" />
+				<input type="text" class="header-name" placeholder="Header Name" ng-model="header.key" ng-style="{'background-color': getHeaderBgColor(header)}" />:
+				<input type="text" class="header-value" placeholder="Header Value"  ng-model="header.value" ng-style="{'background-color': getHeaderBgColor(header)}" />
 				<i class="icon-trash" ng-click="removeHeader($index)"></i>
 			</div>
 			<div ng-show="!response.headers.length" class="empty">None</div>
@@ -295,7 +310,7 @@
 				<div>
 			</div>
 		</div>
-		<div id="responseBody" class="responseBody"></div>
+		<div id="responseBody" class="responseBody" ng-style="{'background-color': getBgColor(response.body)}"></div>
 	</div>
 	
 </script>

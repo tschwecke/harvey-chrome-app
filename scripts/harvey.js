@@ -1,6 +1,8 @@
 
 var app = angular.module('harvey', []);
 
+
+
 app.factory('HarveyContext', function() {
 	return {
 		"data" : {},
@@ -22,15 +24,16 @@ app.factory('NavigationSvc', function() {
 		this.view = null;
 
 		this.navigate = function(view) {
-			if(_callback) {
-				_callback();
+			if(view !== _self.view) {
+				if(_callback) {
+					_callback();
+				}
+				setTimeout(function() {
+					_navigationScope.$apply(function() {
+						_self.view = view;
+					});
+				}, 300);
 			}
-			setTimeout(function() {
-				_navigationScope.$apply(function() {
-					_self.view = view;
-				});
-			}, 300);
-
 		};
 
 		this.setNavigateAwayCallback = function(callback) {
@@ -48,7 +51,6 @@ app.factory('NavigationSvc', function() {
 
 app.factory('RollupSvc', function() {
 	var constructor = function() {
-		var _colors = ['#E7FAFA', 'lightyellow', 'lightgreen', 'lightred'];
 		
 		this.rollUpRequest = function(request, templates) {
 			if(!request) {
@@ -66,12 +68,14 @@ app.factory('RollupSvc', function() {
 			
 			var rolledUpRequest = $.extend(true, {}, request);
 
-			rolledUpRequest.method = { "value": null, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
-			rolledUpRequest.protocol = { "value": null, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
-			rolledUpRequest.host = { "value": null, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
-			rolledUpRequest.port = { "value": null, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
-			rolledUpRequest.resource = { "value": null, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
-			rolledUpRequest.body = { "value": null, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+			rolledUpRequest.method = { "value": null, "inheritedValue": null, "inheritedFrom": null };
+			rolledUpRequest.protocol = { "value": null, "inheritedValue": null, "inheritedFrom": null };
+			rolledUpRequest.host = { "value": null, "inheritedValue": null, "inheritedFrom": null };
+			rolledUpRequest.port = { "value": null, "inheritedValue": null, "inheritedFrom": null };
+			rolledUpRequest.resource = { "value": null, "inheritedValue": null, "inheritedFrom": null };
+			rolledUpRequest.body = { "value": null, "inheritedValue": null, "inheritedFrom": null };
+			rolledUpHeaders = {};
+			rolledUpQuerystring = {};
 
 			if(rolledUpRequest.templates) {
 				for(var i=0; i<rolledUpRequest.templates.length; i++) {
@@ -89,22 +93,34 @@ app.factory('RollupSvc', function() {
 
 					if(template != null) {
 						if(template.method) {
-							rolledUpRequest.method = { "value": template.method, "inheritedValue": template.method, "inheritedFrom": template.id, "bgcolor": _colors[i] };
+							rolledUpRequest.method = { "value": template.method, "inheritedValue": template.method, "inheritedFrom": template.id };
 						}
 						if(template.protocol) {
-							rolledUpRequest.protocol = { "value": template.protocol, "inheritedValue": template.protocol, "inheritedFrom": template.id, "bgcolor": _colors[i] };
+							rolledUpRequest.protocol = { "value": template.protocol, "inheritedValue": template.protocol, "inheritedFrom": template.id };
 						}
 						if(template.host) {
-							rolledUpRequest.host = { "value": template.host, "inheritedValue": template.host, "inheritedFrom": template.id, "bgcolor": _colors[i] };
+							rolledUpRequest.host = { "value": template.host, "inheritedValue": template.host, "inheritedFrom": template.id };
 						}
 						if(template.port) {
-							rolledUpRequest.port = { "value": template.port, "inheritedValue": template.port, "inheritedFrom": template.id, "bgcolor": _colors[i] };
+							rolledUpRequest.port = { "value": template.port, "inheritedValue": template.port, "inheritedFrom": template.id };
 						}
 						if(template.resource) {
-							rolledUpRequest.resource = { "value": template.resource, "inheritedValue": template.resource, "inheritedFrom": template.id, "bgcolor": _colors[i] };
+							rolledUpRequest.resource = { "value": template.resource, "inheritedValue": template.resource, "inheritedFrom": template.id };
 						}
 						if(template.body) {
-							rolledUpRequest.body = { "value": template.body, "inheritedValue": template.body, "inheritedFrom": template.id, "bgcolor": _colors[i] };
+							rolledUpRequest.body = { "value": template.body, "inheritedValue": template.body, "inheritedFrom": template.id };
+						}
+
+						if(template.headers) {
+							for(var headerName in template.headers) {
+								rolledUpHeaders[headerName] = { "key": headerName, "value": template.headers[headerName], "inheritedKey": headerName, "inheritedValue": template.headers[headerName], "inheritedFrom": template.id };
+							}
+						}
+						
+						if(template.querystring) {
+							for(var qsName in template.querystring) {
+								rolledUpQuerystring[qsName] = { "key": qsName, "value": template.querystring[qsName], "inheritedKey": qsName, "inheritedValue": template.querystring[qsName], "inheritedFrom": template.id };
+							}
 						}
 					}
 				}
@@ -128,6 +144,35 @@ app.factory('RollupSvc', function() {
 			if(request.body) {
 				rolledUpRequest.body.value = request.body;
 			}
+			if(request.headers) {
+				for(var headerName in request.headers) {
+					if(rolledUpHeaders[headerName]) {
+						rolledUpHeaders[headerName].value = request.headers[headerName];
+					}
+					else {
+						rolledUpHeaders[headerName] = { "key": headerName, "value": request.headers[headerName], "inheritedKey": null, "inheritedValue": null, "inheritedFrom": null };
+					}
+				}
+			}
+			if(request.querystring) {
+				for(var qsName in request.querystring) {
+					if(rolledUpHeaders[qsName]) {
+						rolledUpHeaders[qsName].value = request.querystring[qsName];
+					}
+					else {
+						rolledUpHeaders[qsName] = { "key": qsName, "value": request.querystring[qsName], "inheritedKey": null, "inheritedValue": null, "inheritedFrom": null };
+					}
+				}
+			}
+
+			rolledUpRequest.headers = [];
+			for(var headerName in rolledUpHeaders) {
+				rolledUpRequest.headers.push(rolledUpHeaders[headerName]);
+			}
+			rolledUpRequest.querystring = [];
+			for(var qsName in rolledUpQuerystring) {
+				rolledUpRequest.querystring.push(rolledUpQuerystring[qsName]);
+			}
 
 			return rolledUpRequest;
 		};
@@ -143,8 +188,9 @@ app.factory('RollupSvc', function() {
 
 			var rolledUpResponse = $.extend(true, {}, response);
 
-			rolledUpResponse.statusCode = { "value": null, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
-			rolledUpResponse.body = { "value": null, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+			rolledUpResponse.statusCode = { "value": null, "inheritedValue": null, "inheritedFrom": null };
+			rolledUpResponse.body = { "value": null, "inheritedValue": null, "inheritedFrom": null };
+			rolledUpHeaders = {};
 
 			if(rolledUpResponse.templates) {
 				for(var i=0; i<rolledUpResponse.templates.length; i++) {
@@ -162,20 +208,40 @@ app.factory('RollupSvc', function() {
 
 					if(template != null) {
 						if(template.statusCode) {
-							rolledUpResponse.statusCode = { "value": template.statusCode, "inheritedValue": template.statusCode, "inheritedFrom": template.id, "bgcolor": _colors[i] };
+							rolledUpResponse.statusCode = { "value": template.statusCode, "inheritedValue": template.statusCode, "inheritedFrom": template.id };
 						}
 						if(template.body) {
-							rolledUpResponse.body = { "value": template.body, "inheritedValue": template.body, "inheritedFrom": template.id, "bgcolor": _colors[i] };
+							rolledUpResponse.body = { "value": template.body, "inheritedValue": template.body, "inheritedFrom": template.id };
+						}
+						if(template.headers) {
+							for(var headerName in template.headers) {
+								rolledUpHeaders[headerName] = { "key": headerName, "value": template.headers[headerName], "inheritedKey": headerName, "inheritedValue": template.headers[headerName], "inheritedFrom": template.id };
+							}
 						}
 					}
 				}
 			}
 
 			if(response.statusCode) {
-				rolledUpResponse.statusCode = { "value": response.statusCode, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+				rolledUpResponse.statusCode.value = response.statusCode;
 			}
 			if(response.body) {
-				rolledUpResponse.body = { "value": response.body, "inheritedValue": null, "inheritedFrom": null, "bgcolor": null };
+				rolledUpResponse.body.value= response.body;
+			}
+			if(response.headers) {
+				for(var headerName in response.headers) {
+					if(rolledUpHeaders[headerName]) {
+						rolledUpHeaders[headerName].value = response.headers[headerName];
+					}
+					else {
+						rolledUpHeaders[headerName] = { "key": headerName, "value": response.headers[headerName], "inheritedKey": null, "inheritedValue": null, "inheritedFrom": null };
+					}
+				}
+			}
+
+			rolledUpResponse.headers = [];
+			for(var headerName in rolledUpHeaders) {
+				rolledUpResponse.headers.push(rolledUpHeaders[headerName]);
 			}
 
 			return rolledUpResponse;

@@ -69,7 +69,27 @@
 	#requestContainer .templatesContainer {
 		margin-bottom: 15px;
 	}
+	
+	#requestContainer .templatesContainer .icon-move {
+		visibility: hidden;
+	}
 
+	#requestContainer .templatesContainer .icon-trash {
+		margin-bottom: -2px;
+	}
+
+	#requestContainer .templatesContainer .newTemplateIdContainer {
+		display: inline-block;
+	}
+	
+	#requestContainer .templatesContainer .newTemplateId {
+		height: 20px;
+		margin: 2px;
+		padding: 2px;
+		width: 150px;
+		text-align: center;
+	}
+	
 	#requestContainer .empty {
 		font-weight: bold;
 		color: #CCCCCC;

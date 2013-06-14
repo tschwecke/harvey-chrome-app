@@ -8,6 +8,59 @@
 		max-width: 500px;
 	}
 
+	#responseContainer .header {
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: bold;
+		margin-top: 5px;
+		margin-bottom: 2px;
+	}
+
+	#responseContainer .inline {
+		display: inline-block;
+	}
+
+	#responseContainer .templateName {
+		display: inline-block;
+		border-radius: 4px;
+		padding: 2px;
+		margin: 2px;
+		border: solid 1px #CCCCCC;
+	}
+
+	#responseContainer .templateName i {
+		opacity: 0;
+	}
+
+	#responseContainer .templateName:hover i {
+		opacity: .7;
+	}
+
+	#responseContainer .templatesContainer {
+		margin-bottom: 15px;
+	}
+
+	#responseContainer .templatesContainer .icon-move {
+		visibility: hidden;
+	}
+
+	#responseContainer .templatesContainer .icon-trash {
+		margin-bottom: -2px;
+	}
+
+
+	#responseContainer .templatesContainer .newTemplateIdContainer {
+		display: inline-block;
+	}
+
+	#responseContainer .templatesContainer .newTemplateId {
+		height: 20px;
+		margin: 2px;
+		padding: 2px;
+		width: 150px;
+		text-align: center;
+	}
+
 	#responseContainer .statusCode {
 		width: 80px;
 	}
