@@ -8,11 +8,11 @@ function RequestCtrl($scope, HarveyContext, RequestSvc) {
 	$scope.methodPlaceholder = $scope.methodEmpty ? 'Method' : '';
 	$scope.protocolEmpty = !$scope.request.protocol.value;
 	$scope.protocolPlaceholder = $scope.protocolEmpty ? 'Protocol' : '';
+	$scope.displayTemplates = getDisplayTemplates($scope);
 
 	$scope.getColor = function(index) {
 		return _colors[index];
 	}
-
 
 	$scope.getBgColor = function(field) {
 		var bgcolor = '';
@@ -218,4 +218,16 @@ function RequestCtrl($scope, HarveyContext, RequestSvc) {
 
 
 
+
+var getDisplayTemplates = function($scope) {
+	if($scope.$parent && $scope.$parent.hasOwnProperty('displayTemplates')) {
+		return $scope.$parent.displayTemplates;
+	}
+	else if($scope.$parent && $scope.$parent.$parent && $scope.$parent.$parent.hasOwnProperty('displayTemplates')) {
+		return $scope.$parent.$parent.displayTemplates;
+	}
+	else {
+		return true;
+	}
+};
  

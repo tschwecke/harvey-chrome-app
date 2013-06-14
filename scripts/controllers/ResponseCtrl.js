@@ -5,6 +5,7 @@ function ResponseCtrl($scope, HarveyContext, ResponseSvc) {
 	$scope.response = ResponseSvc.currentResponse;
 	$scope.validjson = true;
 	$scope.changed = false;
+	$scope.displayTemplates = getDisplayTemplates($scope);
 
 
 	$scope.getColor = function(index) {
@@ -166,3 +167,16 @@ function ResponseCtrl($scope, HarveyContext, ResponseSvc) {
 
 
 
+
+
+var getDisplayTemplates = function($scope) {
+	if($scope.$parent && $scope.$parent.hasOwnProperty('displayTemplates')) {
+		return $scope.$parent.displayTemplates;
+	}
+	else if($scope.$parent && $scope.$parent.$parent && $scope.$parent.$parent.hasOwnProperty('displayTemplates')) {
+		return $scope.$parent.$parent.displayTemplates;
+	}
+	else {
+		return true;
+	}
+};

@@ -213,7 +213,7 @@
 <script type="text/ng-template" id="Request">
 
 	<div id="requestContainer" ng-controller="RequestCtrl">
-		<div class="container templatesContainer">
+		<div class="container templatesContainer" ng-show="displayTemplates">
 			<div class="header">Templates  <i class="icon-plus" ng-click="showAddRequestTemplate=true"></i></div>
 			<div ng-repeat="template in request.templates" class="templateName" style="background-color: {{getColor($index)}};">
 				<i class="icon-move"></i>
@@ -277,7 +277,7 @@
 <script type="text/ng-template" id="Response">
 
 	<div id="responseContainer" ng-controller="ResponseCtrl">
-		<div class="container templatesContainer">
+		<div class="container templatesContainer" ng-show="displayTemplates">
 			<div class="header">Templates  <i class="icon-plus" ng-click="showAddResponseTemplate=true"></i></div>
 			<div ng-repeat="template in response.templates" class="templateName" style="background-color: {{getColor($index)}};">
 				<i class="icon-move"></i>

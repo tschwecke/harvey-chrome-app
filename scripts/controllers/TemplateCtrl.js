@@ -4,6 +4,7 @@ function TemplateCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, Response
 	$scope.template = HarveyContext.currentTemplate;
 	$scope.id = $scope.template.id;
 	$scope.templateType = HarveyContext.currentTemplateType;
+	$scope.displayTemplates = false;
 
 
 	NavigationSvc.setNavigateAwayCallback(function() {
