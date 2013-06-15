@@ -1,30 +1,46 @@
- 
-console.log('main loaded');
+var currentFileEntry = null; 
+
 window.addEventListener('message', function(message) {
-	console.log('The other page says hello ', message);
+	
+	switch(message.data.messageType) {
+		case 'openFile':
+			var options = {type: 'openWritableFile',accepts:[{extensions: ['json']}]};
 
-	var options = {
-		type: 'openFile',
-		accepts:[{
-			extensions: ['html']
-		}]
-	};
+			window.chrome.fileSystem.chooseEntry(options, function(fileEntry) {
+				if (!fileEntry) {
+					sendMessage('fileOpenCanceled');
+					return;
+				}
+				currentFileEntry = fileEntry;
+				fileEntry.file(function(file) {
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						sendMessage('fileOpenSucceeded', e.target.result);
+					};
+					reader.readAsText(file);
+				});
+			});
+			break;
 
-//	var options = {type: 'saveFile', suggestedName: 'test'};
+		case 'save':
+				saveContent(currentFileEntry, message.content);
+			break;
 
-	window.chrome.fileSystem.chooseEntry(options, function(fileEntry) {
-		if (!fileEntry) {
-			sendMessage('fileOpenCanceled');
-			return;
-		}
-		fileEntry.file(function(file) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				sendMessage('fileOpenSucceeded', e.target.result);
-			};
-			reader.readAsText(file);
-		});
-	});
+		case 'saveAs':
+			var options = {type: 'openSave',accepts:[{extensions: ['json']}]};
+
+			window.chrome.fileSystem.chooseEntry(options, function(fileEntry) {
+				if (!fileEntry) {
+					sendMessage('fileSaveAsCanceled');
+					return;
+				}
+				currentFileEntry = fileEntry;
+				saveContent(fileEntry, message.content);
+			});
+			break;
+	}
+
+
 
 
 });
@@ -32,4 +48,12 @@ window.addEventListener('message', function(message) {
 function sendMessage(messageType, content) {
 	var harveyFrame = document.getElementById('harveyFrame').contentWindow;
 	harveyFrame.postMessage({"type": messageType, "content": content}, "*");
-};
+}
+
+function saveContent(fileEntry, content) {
+	fileEntry.createWriter(function(fileWriter) {
+
+		var blob = new Blob([content], {type: 'text/plain'});
+		fileWriter.write(blob);
+	});
+}
