@@ -12,4 +12,9 @@ function NavigationCtrl($scope, HarveyContext, NavigationSvc) {
 
 		NavigationSvc.navigate(view);
 	};
+
+	$scope.save = function() {
+		parent.postMessage({"messageType": "saveAs", "content": js_beautify(JSON.stringify(HarveyContext.data))}, '*');
+
+	};
 }

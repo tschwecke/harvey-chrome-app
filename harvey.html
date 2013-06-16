@@ -32,6 +32,7 @@
 			<div ng-class="{menuItem: true, active: selectedMenu=='templates'}" ng-click="menuSelected('templates', 'TemplateList')">Templates</div>
 			<div ng-class="{menuItem: true, active: selectedMenu=='tests'}" ng-click="menuSelected('tests', 'TestList')">Tests</div>
 			<div ng-class="{menuItem: true, active: selectedMenu=='helpers'}" ng-click="menuSelected('helpers', 'HelperList')">Helpers</div>
+			<div ng-class="{menuItem: true, active: selectedMenu=='save'}" ng-click="save()">Save</div>
 		</div>
 		<div ng-class="{menuPointer: true, templatesActive: selectedMenu=='templates', testsActive: selectedMenu=='tests', helpersActive: selectedMenu=='helpers'}">
 			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 8px; width: 24px;">

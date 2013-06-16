@@ -23,11 +23,11 @@ window.addEventListener('message', function(message) {
 			break;
 
 		case 'save':
-				saveContent(currentFileEntry, message.content);
+				saveContent(currentFileEntry, message.data.content);
 			break;
 
 		case 'saveAs':
-			var options = {type: 'openSave',accepts:[{extensions: ['json']}]};
+			var options = {type: 'saveFile',accepts:[{extensions: ['json']}]};
 
 			window.chrome.fileSystem.chooseEntry(options, function(fileEntry) {
 				if (!fileEntry) {
@@ -35,7 +35,7 @@ window.addEventListener('message', function(message) {
 					return;
 				}
 				currentFileEntry = fileEntry;
-				saveContent(fileEntry, message.content);
+				saveContent(fileEntry, message.data.content);
 			});
 			break;
 	}
