@@ -1,6 +1,6 @@
 
 function RequestCtrl($scope, HarveyContext, RequestSvc) {
-	var _colors = ['#E7FAFA', 'lightyellow', 'lightgreen', 'red'];
+	var _colors = ['#E7FAFA', '#D0E1F0', '#B9C8E7', '#A2AFDD', '#8B96D3'];
 	$scope.request = RequestSvc.currentRequest;
 	$scope.validjson = true;
 	$scope.changed = false;

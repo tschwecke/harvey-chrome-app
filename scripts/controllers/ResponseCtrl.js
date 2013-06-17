@@ -1,7 +1,7 @@
  
 
 function ResponseCtrl($scope, HarveyContext, ResponseSvc) {
-	var _colors = ['#E7FAFA', 'lightyellow', 'lightgreen', 'red'];
+	var _colors = ['#C8F6C8', '#A0D9A0', '#78BC78', '#50A050', '#288328'];
 	$scope.response = ResponseSvc.currentResponse;
 	$scope.validjson = true;
 	$scope.changed = false;

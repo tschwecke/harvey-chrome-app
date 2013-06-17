@@ -1,5 +1,5 @@
  
-function NavigationCtrl($scope, HarveyContext, NavigationSvc) {
+function NavigationCtrl($scope, HarveyContext, NavigationSvc, FileSvc) {
 
 	$scope.state = 'ready';
 	$scope.navigation = NavigationSvc;
@@ -14,7 +14,10 @@ function NavigationCtrl($scope, HarveyContext, NavigationSvc) {
 	};
 
 	$scope.save = function() {
-		parent.postMessage({"messageType": "saveAs", "content": js_beautify(JSON.stringify(HarveyContext.data))}, '*');
-
+		FileSvc.save(HarveyContext.data);
+	};
+	
+	$scope.close = function() {
+		NavigationSvc.navigate('Welcome');
 	};
 }

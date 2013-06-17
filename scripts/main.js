@@ -3,6 +3,9 @@ var currentFileEntry = null;
 window.addEventListener('message', function(message) {
 	
 	switch(message.data.messageType) {
+		case 'clearFile':
+			currentFileEntry = null;
+			break;
 		case 'openFile':
 			var options = {type: 'openWritableFile',accepts:[{extensions: ['json']}]};
 
@@ -23,7 +26,21 @@ window.addEventListener('message', function(message) {
 			break;
 
 		case 'save':
+			if(currentFileEntry) {
 				saveContent(currentFileEntry, message.data.content);
+			}
+			else {
+				var options = {type: 'saveFile',accepts:[{extensions: ['json']}]};
+
+				window.chrome.fileSystem.chooseEntry(options, function(fileEntry) {
+					if (!fileEntry) {
+						sendMessage('fileSaveCanceled');
+						return;
+					}
+					currentFileEntry = fileEntry;
+					saveContent(fileEntry, message.data.content);
+				});
+			}
 			break;
 
 		case 'saveAs':
@@ -52,7 +69,10 @@ function sendMessage(messageType, content) {
 
 function saveContent(fileEntry, content) {
 	fileEntry.createWriter(function(fileWriter) {
-
+		fileWriter.onwrite = function(e) {
+			fileWriter.truncate(content.length);
+		};
+		
 		var blob = new Blob([content], {type: 'text/plain'});
 		fileWriter.write(blob);
 	});

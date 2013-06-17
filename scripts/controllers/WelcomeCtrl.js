@@ -1,17 +1,13 @@
-function WelcomeCtrl($scope, HarveyContext, NavigationSvc) {
+function WelcomeCtrl($scope, HarveyContext, NavigationSvc, FileSvc) {
 
 	$scope.state = 'ready';
 	$scope.context = HarveyContext;
 
-	NavigationSvc.setNavigateAwayCallback(function() {
-		$scope.$apply(function() {
-			$scope.state = 'fading';
-		});
-		setTimeout(function() {
-			$scope.$apply(function() {
-				$scope.state = 'hidden';
-			});
-		}, 300);
+	NavigationSvc.setNavigateAwayCallback(navigateAwayCallback);
+
+	NavigationSvc.setShowWelcomeCallback(function() {
+		$scope.state = 'ready';
+		NavigationSvc.setNavigateAwayCallback(navigateAwayCallback);
 	});
 
 	$scope.openFile = function() {
@@ -38,11 +34,11 @@ function WelcomeCtrl($scope, HarveyContext, NavigationSvc) {
 	};
 
 	$scope.startFromScratch = function() {
-		if(!HarveyContext.data.requestTemplates)	HarveyContext.data.requestTemplates = [];
-		if(!HarveyContext.data.responseTemplates)	HarveyContext.data.responseTemplates = [];
-		if(!HarveyContext.data.setupAndTeardowns)	HarveyContext.data.setupAndTeardowns = [];
-		if(!HarveyContext.data.tests)				HarveyContext.data.tests = [];
-
+		FileSvc.clear();  //Ensure that we're not still pointing to a file if the user had previously opened one.
+		HarveyContext.data.requestTemplates = [];
+		HarveyContext.data.responseTemplates = [];
+		HarveyContext.data.setupAndTeardowns = [];
+		HarveyContext.data.tests = [];
 
 		setTimeout(function() {
 			NavigationSvc.navigate('TestList');
@@ -50,19 +46,19 @@ function WelcomeCtrl($scope, HarveyContext, NavigationSvc) {
 	};
 
 
-	var promptUserForFile = function(callback) {
+	function promptUserForFile(callback) {
+		FileSvc.open(callback);
+	}
 
-		parent.postMessage({"messageType": "openFile"}, '*');
-
-		window.addEventListener('message', function(message) {
-			if(message.data.type === 'fileOpenSucceeded') {
-				callback(null, message.data.content);
-			}
-			else {
-				callback(null, null);
-			}
+	function navigateAwayCallback() {
+		$scope.$apply(function() {
+			$scope.state = 'fading';
 		});
-
-	};
+		setTimeout(function() {
+			$scope.$apply(function() {
+				$scope.state = 'hidden';
+			});
+		}, 300);
+	}
 }
  

@@ -1,6 +1,6 @@
 	#welcomeScreen {
 		position: absolute;
-		height: 100%;
+		height: 90%;
 		width: 100%;
 		background-color: #F5F5F5;
 		transition: opacity .5s;
@@ -13,6 +13,7 @@
 
 	#welcomeScreen.hideWelcome{
 		display: none;
+		opacity: 0;
 	}
 
 

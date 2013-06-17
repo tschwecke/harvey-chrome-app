@@ -20,9 +20,15 @@
 	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="{fadeWelcome: state=='fading', hideWelcome: state=='hidden'}">
 		<h2 class="header">Welcome to Harvey</h2>
 		<div class="welcomeContainer">
-			<div id="open" ng-click="openFile()" ng-class="'welcomeButton openfile' + openClicked" ng-mousedown="openClicked=' clickTest'" ng-mouseup="openClicked=''"><div class="centerText">Open Existing Tests</div></div>
-			<div class='or'><div class="centerText">or</div></div>
-			<div id="scratch" ng-click="startFromScratch()" ng-class="'welcomeButton scratch' + scratchClicked" ng-mousedown="scratchClicked=' clickTest'" ng-mouseup="scratchClicked=''"><div class="centerText">Start From Scratch</div></div>
+			<div id="open" ng-click="openFile()" ng-class="'welcomeButton openfile' + openClicked" ng-mousedown="openClicked=' clickTest'" ng-mouseup="openClicked=''">
+				<div class="centerText">Open Existing Tests</div>
+			</div>
+			<div class='or'>
+				<div class="centerText">or</div>
+			</div>
+			<div id="scratch" ng-click="startFromScratch()" ng-class="'welcomeButton scratch' + scratchClicked" ng-mousedown="scratchClicked=' clickTest'" ng-mouseup="scratchClicked=''">
+				<div class="centerText">Start From Scratch</div>
+			</div>
 			<div style="clear: both"></div>
 		</div>
 	</div>
@@ -32,12 +38,16 @@
 			<div ng-class="{menuItem: true, active: selectedMenu=='templates'}" ng-click="menuSelected('templates', 'TemplateList')">Templates</div>
 			<div ng-class="{menuItem: true, active: selectedMenu=='tests'}" ng-click="menuSelected('tests', 'TestList')">Tests</div>
 			<div ng-class="{menuItem: true, active: selectedMenu=='helpers'}" ng-click="menuSelected('helpers', 'HelperList')">Helpers</div>
-			<div ng-class="{menuItem: true, active: selectedMenu=='save'}" ng-click="save()">Save</div>
 		</div>
-		<div ng-class="{menuPointer: true, templatesActive: selectedMenu=='templates', testsActive: selectedMenu=='tests', helpersActive: selectedMenu=='helpers'}">
-			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 8px; width: 24px;">
-				<polygon points="12,0 0,8 24,8" style="fill:#555555;stroke:#555555;stroke-width:1" />
-			</svg>
+		<div>
+			<div class="save" ng-click="save()">Save</div>
+			<div class="suiteClose" ng-click="close()">Close</div>
+			<div ng-class="{menuPointer: true, templatesActive: selectedMenu=='templates', testsActive: selectedMenu=='tests', helpersActive: selectedMenu=='helpers'}">
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 8px; width: 24px;">
+					<polygon points="12,0 0,8 24,8" style="fill:#555555;stroke:#555555;stroke-width:1" />
+				</svg>
+			</div>
+			<div style="clear: both"></div>
 		</div>
 	</div>
 
@@ -46,7 +56,8 @@
 		<div ng-include src="navigation.view" ></div>
 		
 	</div>
-</body>
+
+
 <script src="scripts/thirdParty/jquery/jquery.min.js"></script>
 <script src="scripts/thirdParty/bootstrap/js/bootstrap.min.js"></script>
 <script src="scripts/thirdParty/angular/angular.min.js"></script>
@@ -56,6 +67,12 @@
 <script src="scripts/thirdParty/underscore/underscore-min.js"></script>
 
 <script src="scripts/harvey.js"></script>
+<script src="scripts/services/HarveyContext.js"></script>
+<script src="scripts/services/FileSvc.js"></script>
+<script src="scripts/services/NavigationSvc.js"></script>
+<script src="scripts/services/RequestSvc.js"></script>
+<script src="scripts/services/ResponseSvc.js"></script>
+<script src="scripts/services/RollupSvc.js"></script>
 <script src="scripts/controllers/NavigationCtrl.js"></script>
 <script src="scripts/controllers/WelcomeCtrl.js"></script>
 <script src="scripts/controllers/TemplateListCtrl.js"></script>
@@ -352,12 +369,14 @@
 				<div class="bodyTools">
 					<i id="beautify" class="icon-align-left" ng-click="formatBody()"></i>
 					<span id="invalidjson" ng-show="validjson==false" class="label label-warning">Invalid Json</span>
-				<div>
+				</div>
 			</div>
 		</div>
 		<div id="responseBody" class="responseBody" ng-style="{'background-color': getBgColor(response.body)}"></div>
 	</div>
 	
 </script>
-	
+
+</body>
+
 </html>

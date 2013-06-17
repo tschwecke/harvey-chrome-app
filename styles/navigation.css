@@ -1,6 +1,10 @@
-
+	
 	#menu.menu {
 		text-align: center;
+		width: 1200px;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	#menu .menuItem {
@@ -25,22 +29,32 @@
 		height: 8px;
 		line-height: 8px;
 		margin-bottom: 1px;
+		width: 24px;
 		transition: margin-left .6s;
 		-webkit-transition: margin-left .6s;
 	}
 
 	#menu .templatesActive {
-		margin-left: -190px;
+		margin-left: 488px;
 	}
 
 	#menu .testsActive {
-		margin-left: 35px;
+		margin-left: 603px;
 	}
 
 	#menu .helpersActive {
-		margin-left: 215px;
+		margin-left: 702px;
 	}
 
+	#menu .save {
+		float:left;
+		margin-top: -12px;
+	}
+
+	#menu .suiteClose {
+		float:right;
+		margin-top: -12px;
+	}
 
 
 
