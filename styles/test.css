@@ -4,50 +4,83 @@
 		opacity: 1.0;
 	}
 
-	.hideTest{
-		display: none;
-	}
-
 	#testContainer {
+		padding-left: 25px;
+		padding-right: 35px;
 		opacity: 0;
 		transition: opacity .3s;
 		-webkit-transition: opacity .3s;
 	}
 
-	#testContainer .method {
-		width: 95px;
+	#testContainer .id {
+		width: 300px;
+		text-align: center;
+		font-weight: bold;
+		margin-bottom: 15px;
 	}
 
-	#testContainer .protocol {
-		width: 80px;
+	#testContainer .testRequestContainer {
+		float: left;
 	}
 
-	#testContainer .resource {
-		width: 400px;
+	#testContainer .testResponseContainer {
+		float: right;
 	}
-	#testContainer .requestBody {
-		height: 75px;
-		width: 500px;
+
+	#testContainer .testActionContainer {
+		clear: both;
+	}
+
+	#testContainer .header {
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}
+
+
+	#testContainer .setupName, #testContainer .teardownName {
+		display: inline-block;
 		border-radius: 4px;
-		border-color: rgb(204, 204, 204);
-		border-style: solid;
-		border-width: 1px;
-	}
-	#testContainer .invalidjson {
-		display: none;
-	}
-	#testContainer .qs-name, #testContainer .header-name {
-		width: 100px;
-	}
-	#testContainer .templateName {
+		padding: 2px;
 		margin: 2px;
-		padding: 3px;
-		border-radius: 5px;
-		background-color: lightblue;
+		border: solid 1px #CCCCCC;
+		background-color: #E3BBED;
 	}
 
-
-	#testContainer .ace_scrollbar {
-		display: none !important;
+	#testContainer .setupName i, 	#testContainer .teardownName i {
+		opacity: 0;
 	}
- 
+
+	#testContainer .setupName:hover i, #testContainer .teardownName:hover i {
+		opacity: .7;
+	}
+
+	#testContainer .setupsContainer, #testContainer .teardownsContainer {
+		margin-bottom: 15px;
+	}
+
+	#testContainer .setupsContainer .icon-move, #testContainer .teardownsContainer .icon-move {
+		visibility: hidden;
+	}
+
+	#testContainer .setupsContainer .icon-trash, #testContainer .teardownsContainer .icon-trash {
+		margin-bottom: -2px;
+	}
+
+	#testContainer .setupsContainer .newSetupIdContainer, #testContainer .teardownsContainer .newTeardownIdContainer {
+		display: inline-block;
+	}
+
+	#testContainer .setupsContainer .newSetupId, #testContainer .teardownsContainer .newTeardownId {
+		height: 20px;
+		margin: 2px;
+		padding: 2px;
+		width: 150px;
+		text-align: center;
+	}
+	
+	#testContainer .empty {
+		font-weight: bold;
+		color: #CCCCCC;
+	}

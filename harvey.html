@@ -181,7 +181,51 @@
 
 <script type="text/ng-template" id="Test">
 	<div id="testContainer" ng-controller="TestCtrl" ng-class="{fadeInTest: state=='fadingIn'}">
-		Under Construction
+		<input class="id" type="text" ng-model="id" placeholder="Test Id"/>
+
+		<div class="container setupsContainer">
+			<div class="header">Setups  <i class="icon-plus" ng-click="showAddSetup=true"></i></div>
+			<div ng-repeat="setup in test.setup" class="setupName">
+				<i class="icon-move"></i>
+				{{setup}}
+				<i class="icon-trash" ng-click="removeSetup($index)"></i>
+			</div>
+			<div class="newSetupIdContainer" ng-show="showAddSetup">
+				<input id="newSetupId" class="newSetupId" type="text" placeholder="Setup Id" data-provide="typeahead" ng-model="newSetupId" />
+			</div>
+			<div ng-show="!test.setup.length && !showAddSetup" class="empty inline">None</div>
+		</div>
+		
+		<div class="container teardownsContainer">
+			<div class="header">Teardowns  <i class="icon-plus" ng-click="showAddTeardown=true"></i></div>
+			<div ng-repeat="teardown in test.teaardown" class="teardownName">
+				<i class="icon-move"></i>
+				{{setup}}
+				<i class="icon-trash" ng-click="removeTeardown($index)"></i>
+			</div>
+			<div class="newTeardownIdContainer" ng-show="showAddTeardown">
+				<input id="newTeardownId" class="newTeardownId" type="text" placeholder="Teardown Id" data-provide="typeahead" ng-model="newTeardownId" />
+			</div>
+			<div ng-show="!test.teardown.length && !showAddTeardown" class="empty inline">None</div>
+		</div>
+
+		<div style="clear:both;"></div>
+		<div class="testRequestContainer">
+			<div class="header">Request</div>
+			<div ng-include src="'Request'" ></div>
+		</div>
+		<div class="testResponseContainer">
+			<div class="header">Expected Response</div>
+			<div ng-include src="'Response'" ></div>
+		</div>
+		<div class="testActionContainer">
+			<div class="header">Actions</div>
+			Under Construction
+		</div>
+		<div class="save" ng-show="changed">
+			<div class="btn btn-info" ng-click="keep()">Keep</div>
+			<div class="btn" ng-click="discard()">Discard</div>
+		</div>
 	</div>
 </script>
 
@@ -223,7 +267,7 @@
 			<div class="newTemplateIdContainer" ng-show="showAddRequestTemplate">
 				<input id="newRequestTemplateId" class="newTemplateId" type="text" placeholder="Template Id" data-provide="typeahead" ng-model="newTemplateId" />
 			</div>
-			<div ng-show="!request.templates.length" class="empty inline">None</div>
+			<div ng-show="!request.templates.length && !showAddRequestTemplate" class="empty inline">None</div>
 		</div>
 	
 		<div class="container">
@@ -287,7 +331,7 @@
 			<div class="newTemplateIdContainer" ng-show="showAddResponseTemplate">
 				<input id="newResponseTemplateId" class="newTemplateId" type="text" placeholder="Template Id" data-provide="typeahead" ng-model="newTemplateId" />
 			</div>
-			<div ng-show="!response.templates.length" class="empty inline">None</div>
+			<div ng-show="!response.templates.length && !showAddResponseTemplate" class="empty inline">None</div>
 		</div>
 		<div class="container">
 			<div class="header inline">Status Code:</div>
