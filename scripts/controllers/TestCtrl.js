@@ -3,6 +3,10 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 	$scope.state = '';
 	$scope.test = HarveyContext.currentTest;
 	$scope.id = $scope.test.id;
+	$scope.test.request = $scope.test.request || {};
+	$scope.test.expectedResponse = $scope.test.expectedResponse || {};
+	$scope.test.setup = $scope.test.setup || [];
+	$scope.test.teardown = $scope.test.teardown || [];
 	$scope.changed = false;
 
 	configureTypeAheads(HarveyContext);
@@ -50,9 +54,20 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 
 	$scope.keep = function() {
 		$scope.test.id = $scope.id;
+		
 		RequestSvc.populateTemplateWithRequest($scope.test.request);
 		ResponseSvc.populateTemplateWithResponse($scope.test.expectedResponse);
 
+		var found = false;
+		for(var i=0; i<HarveyContext.data.tests.length; i++) {
+			if($scope.test === HarveyContext.data.tests[i]) {
+				found = true;
+				break;
+			}
+		}
+		if(!found) {
+			HarveyContext.data.tests.push($scope.test);
+		}
 		NavigationSvc.navigate('TestList');
 	};
 

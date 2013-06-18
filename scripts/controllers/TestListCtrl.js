@@ -48,7 +48,9 @@ function TestListCtrl($scope, HarveyContext, NavigationSvc) {
 	};
 
 	$scope.createTest = function() {
-		console.log("new test clicked");
+		$scope.context.currentTest = {};
+
+		NavigationSvc.navigate('Test');
 	};
 
 	$scope.editTest = function(index) {
