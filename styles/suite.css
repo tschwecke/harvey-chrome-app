@@ -1,0 +1,80 @@
+ 
+
+	#suiteContainer.fadeInSuite {
+		opacity: 1.0;
+	}
+
+	#suiteContainer {
+		opacity: 0;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+	
+	#suiteContainer .header {
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: bold;
+		margin-top: 5px;
+		margin-bottom: 2px;
+	}
+
+	#suiteContainer .inline {
+		display: inline-block;
+	}
+
+	#suiteContainer .setupName, #suiteContainer .teardownName {
+		display: inline-block;
+		background-color: #E3BBED;
+		border-radius: 4px;
+		padding: 2px;
+		margin: 2px;
+		border: solid 1px #CCCCCC;
+	}
+
+	#suiteContainer .setupName i, #suiteContainer .teardownName i {
+		opacity: 0;
+	}
+
+	#suiteContainer .setupName:hover i, #suiteContainer .teardownName:hover i {
+		opacity: .7;
+	}
+
+	#suiteContainer .setupsContainer, #suiteContainer .teardownsContainer {
+		margin-bottom: 15px;
+	}
+
+	#suiteContainer .setupsContainer .icon-move, #suiteContainer .teardownsContainer .icon-move {
+		visibility: hidden;
+	}
+
+	#suiteContainer .setupsContainer .icon-trash, #suiteContainer .teardownsContainer .icon-trash {
+		margin-bottom: -2px;
+	}
+
+	#suiteContainer .setupsContainer .newSetupIdContainer, #suiteContainer .teardownsContainer .newTeardownIdContainer {
+		display: inline-block;
+	}
+
+	#suiteContainer .setupsContainer .newSetupId, #suiteContainer .teardownsContainer .newTeardownId {
+		height: 20px;
+		margin: 2px;
+		padding: 2px;
+		width: 150px;
+		text-align: center;
+	}
+
+	#suiteContainer .empty {
+		font-weight: bold;
+		color: #CCCCCC;
+	}
+
+	#suiteContainer i {
+		vertical-align: baseline;
+		opacity: .65;
+		transition: opacity .3s;
+		-webkit-transition: opacity .3s;
+	}
+
+	#suiteContainer i:hover {
+		opacity: 1;
+	}

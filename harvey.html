@@ -2,7 +2,7 @@
 <html lang="en" ng-app="harvey">
 <head>
 	<title>Harvey</title>
-	
+
 	<link href="scripts/thirdParty/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="styles/harvey.css" rel="stylesheet" />
 	<link href="styles/welcome.css" rel="stylesheet" />
@@ -15,6 +15,7 @@
 	<link href="styles/helper.css" rel="stylesheet" />
 	<link href="styles/request.css" rel="stylesheet" />
 	<link href="styles/response.css" rel="stylesheet" />
+	<link href="styles/suite.css" rel="stylesheet" />
 </head>
 <body ng-controller="NavigationCtrl">
 	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="{fadeWelcome: state=='fading', hideWelcome: state=='hidden'}">
@@ -35,6 +36,7 @@
 
 	<div id="menu" class="menu">
 		<div>
+			<div ng-class="{menuItem: true, active: selectedMenu=='suite'}" ng-click="menuSelected('suite', 'Suite')">Suite</div>
 			<div ng-class="{menuItem: true, active: selectedMenu=='templates'}" ng-click="menuSelected('templates', 'TemplateList')">Templates</div>
 			<div ng-class="{menuItem: true, active: selectedMenu=='tests'}" ng-click="menuSelected('tests', 'TestList')">Tests</div>
 			<div ng-class="{menuItem: true, active: selectedMenu=='helpers'}" ng-click="menuSelected('helpers', 'HelperList')">Helpers</div>
@@ -42,7 +44,7 @@
 		<div>
 			<div class="save" ng-click="save()">Save</div>
 			<div class="suiteClose" ng-click="close()">Close</div>
-			<div ng-class="{menuPointer: true, templatesActive: selectedMenu=='templates', testsActive: selectedMenu=='tests', helpersActive: selectedMenu=='helpers'}">
+			<div ng-class="{menuPointer: true, suiteActive: selectedMenu=='suite', templatesActive: selectedMenu=='templates', testsActive: selectedMenu=='tests', helpersActive: selectedMenu=='helpers'}">
 				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 8px; width: 24px;">
 					<polygon points="12,0 0,8 24,8" style="fill:#555555;stroke:#555555;stroke-width:1" />
 				</svg>
@@ -52,9 +54,9 @@
 	</div>
 
 	<div class="itemContainer">
-	
+
 		<div ng-include src="navigation.view" ></div>
-		
+
 	</div>
 
 
@@ -83,9 +85,51 @@
 <script src="scripts/controllers/HelperCtrl.js"></script>
 <script src="scripts/controllers/RequestCtrl.js"></script>
 <script src="scripts/controllers/ResponseCtrl.js"></script>
+<script src="scripts/controllers/SuiteCtrl.js"></script>
 
 
 <script type="text/ng-template" id="Welcome">
+</script>
+
+<script type="text/ng-template" id="Suite">
+
+	<div id="suiteContainer" ng-controller="SuiteCtrl" ng-class="{fadeInSuite: state=='fadingIn'}">
+		<div class="setupsContainer">
+			<div class="header">Setups  <i class="icon-plus" ng-click="showAddSetup=true"></i></div>
+			<div ng-repeat="setup in suite.suiteSetup" class="setupName"">
+				<i class="icon-move"></i>
+				{{setup}}
+				<i class="icon-trash" ng-click="removeSetup($index)"></i>
+			</div>
+			<div class="newSetupIdContainer" ng-show="showAddSetup">
+				<input id="newSetupId" class="newSetupId" type="text" placeholder="Setup Id" data-provide="typeahead" ng-model="newSetupId" />
+			</div>
+			<div ng-show="!suite.suiteSetup.length && !showAddSetup" class="empty inline">None</div>
+		</div>
+		<div class="teardownsContainer">
+			<div class="header">Teardowns  <i class="icon-plus" ng-click="showAddTeardown=true"></i></div>
+			<div ng-repeat="teardown in suite.suiteTeardown" class="teardownName"">
+				<i class="icon-move"></i>
+				{{teardown}}
+				<i class="icon-trash" ng-click="removeTeardown($index)"></i>
+			</div>
+			<div class="newTeardownIdContainer" ng-show="showAddTeardown">
+				<input id="newTeardownId" class="newTeardownId" type="text" placeholder="Teardown Id" data-provide="typeahead" ng-model="newTeardownId" />
+			</div>
+			<div ng-show="!suite.suiteTeardown.length && !showAddTeardown" class="empty inline">None</div>
+		</div>
+		<div class="configContainer">
+			<div class="header">Config <i class="icon-plus" ng-click="addConfig()"></i></div>
+			<div ng-repeat="configEntry in config">
+				<input type="text" class="config-name" placeholder="Config Name" ng-model="configEntry.key" />:
+				<input type="text" class="config-value" placeholder="Default Value"  ng-model="configEntry.value" />
+				<i class="icon-trash" ng-click="removeConfig($index)"></i>
+			</div>
+			<div ng-show="!config.length" class="empty">None</div>
+
+		</div>
+	</div>
+	
 </script>
 
 <script type="text/ng-template" id="TemplateList">
@@ -213,7 +257,7 @@
 			</div>
 			<div ng-show="!test.setup.length && !showAddSetup" class="empty inline">None</div>
 		</div>
-		
+
 		<div class="container teardownsContainer">
 			<div class="header">Teardowns  <i class="icon-plus" ng-click="showAddTeardown=true"></i></div>
 			<div ng-repeat="teardown in test.teaardown" class="teardownName">
@@ -287,7 +331,7 @@
 			</div>
 			<div ng-show="!request.templates.length && !showAddRequestTemplate" class="empty inline">None</div>
 		</div>
-	
+
 		<div class="container">
 			<select id="method" ng-class="{method: true, placeholder: methodEmpty}" ng-model="request.method.value" ng-change="methodChanged()" ng-style="{'background-color': getBgColor(request.method)}">
 				<option value='' ng-disabled="methodEmpty" ng-class="{hide: methodEmpty}">{{methodPlaceholder}}</option>
@@ -333,7 +377,7 @@
 		</div>
 		<div id="requestBody" class="requestBody"  ng-style="{'background-color': getBgColor(request.body)}"></div>
 	</div>
-	
+
 </script>
 
 <script type="text/ng-template" id="Response">
@@ -374,7 +418,7 @@
 		</div>
 		<div id="responseBody" class="responseBody" ng-style="{'background-color': getBgColor(response.body)}"></div>
 	</div>
-	
+
 </script>
 
 </body>

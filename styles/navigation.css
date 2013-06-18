@@ -34,16 +34,20 @@
 		-webkit-transition: margin-left .6s;
 	}
 
+	#menu .suiteActive {
+		margin-left: 418px;
+	}
+
 	#menu .templatesActive {
-		margin-left: 488px;
+		margin-left: 528px;
 	}
 
 	#menu .testsActive {
-		margin-left: 603px;
+		margin-left: 643px;
 	}
 
 	#menu .helpersActive {
-		margin-left: 702px;
+		margin-left: 742px;
 	}
 
 	#menu .save {
