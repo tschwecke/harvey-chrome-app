@@ -39,6 +39,9 @@ function WelcomeCtrl($scope, HarveyContext, NavigationSvc, FileSvc) {
 		HarveyContext.data.responseTemplates = [];
 		HarveyContext.data.setupAndTeardowns = [];
 		HarveyContext.data.tests = [];
+		HarveyContext.data.suiteSetup = [];
+		HarveyContext.data.suiteTeardown = [];
+		
 
 		setTimeout(function() {
 			NavigationSvc.navigate('TestList');

@@ -8,14 +8,10 @@
 
 	"app": {
 		"background": {
-			"scripts": ["background.js"]
+			"scripts": ["scripts/background.js"]
 		}
 	},
 	"permissions": [ "*://*/*", {"fileSystem": ["write"]}],
 
-	"minimum_chrome_version": "23",
-
-	"sandbox": {
-		"pages": ["harvey.html"]
-	}
+	"minimum_chrome_version": "23"
 }

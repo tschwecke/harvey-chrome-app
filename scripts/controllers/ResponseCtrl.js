@@ -104,7 +104,7 @@ function ResponseCtrl($scope, HarveyContext, ResponseSvc) {
 			editor.resize();
 	};
 
-	var wireupForm = function($scope, bodyText, bodyCallback) {
+	var wireupForm = function($scope, bodyText, bodyCallback, ResponseSvc) {
 
 		if(_.isObject(bodyText)) bodyText = js_beautify(JSON.stringify(bodyText));
 
@@ -149,7 +149,7 @@ function ResponseCtrl($scope, HarveyContext, ResponseSvc) {
 
 
 	}
-	wireupForm($scope, $scope.response.body.value, $scope.updateModelWithBody);
+	wireupForm($scope, $scope.response.body.value, $scope.updateModelWithBody, ResponseSvc);
 
 	//Assign template colors
 	var assignTemplateColors = function() {

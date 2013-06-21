@@ -9,7 +9,7 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 	$scope.test.teardown = $scope.test.teardown || [];
 	$scope.changed = false;
 
-	configureTypeAheads(HarveyContext);
+	configureTypeAheads($scope.test, HarveyContext);
 	
 	NavigationSvc.setNavigateAwayCallback(function() {
 		$scope.state = 'fadingOut';
@@ -24,6 +24,11 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 	RequestSvc.currentRequest = RollupSvc.rollUpRequest($scope.test.request, HarveyContext.data.requestTemplates);
 	ResponseSvc.currentResponse = RollupSvc.rollUpResponse($scope.test.expectedResponse, HarveyContext.data.responseTemplates);
 
+	var variables = getVariableList($scope.test, HarveyContext);
+	RequestSvc.availableVariables = variables;
+	ResponseSvc.availableVariables = variables;
+
+	
 	var originalRequest = null;
 	$scope.request = RequestSvc.currentRequest;
 	$scope.$watch('request', function(newValue, oldValue) {
@@ -122,21 +127,92 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 	$scope.removeTeardown = function(index) {
 		delete $scope.test.teardown.splice(index, 1);
 	}
-}
 
-var configureTypeAheads = function(HarveyContext) {
-	var setupIds = [];
-	for(var i=0; i<HarveyContext.data.setupAndTeardowns.length; i++) {
-		setupIds.push(HarveyContext.data.setupAndTeardowns[i].id);
+	
+	function configureTypeAheads(test, HarveyContext) {
+
+		//Get the list of helpers for the setup and teardown input boxes
+		var setupIds = [];
+		for(var i=0; i<HarveyContext.data.setupAndTeardowns.length; i++) {
+			setupIds.push(HarveyContext.data.setupAndTeardowns[i].id);
+		}
+
+		$('#newSetupId').typeahead({
+			"source": setupIds,
+			"items": 15,
+			"sorter": function(items) {
+				items.sort();
+			}
+		});
+
+		$('#newTeardownId').typeahead({
+			"source": setupIds,
+			"items": 15,
+			"sorter": function(items) {
+				items.sort();
+			}
+		});
+	};
+
+	function getVariableList(test, HarveyContext) {
+
+		//Get the list of all variables available to this test
+		//First, pull in all config
+		var variables = [];
+		for(var configKey in HarveyContext.data.config) {
+			variables.push(configKey);
+		}
+
+		//Next, include any variables created during suite setups
+		for(var i=0; i<HarveyContext.data.suiteSetup.length; i++) {
+			var setupId = HarveyContext.data.suiteSetup[i];
+			var setupVariables = findVariablesInSetup(setupId, HarveyContext.data.setupAndTeardowns);
+
+			for(var j=0; j<setupVariables.length; j++) {
+				variables.push(setupVariables[j]);
+			}
+		}
+
+		//Finally, include any variables created during test setups
+		for(var i=0; i<test.setup.length; i++) {
+			var setupId = test.setup[i];
+			var setupVariables = findVariablesInSetup(setupId, HarveyContext.data.setupAndTeardowns);
+
+			for(var j=0; j<setupVariables.length; j++) {
+				variables.push(setupVariables[j]);
+			}
+		}
+
+		return variables;
 	}
 
-	$('#newSetupId').typeahead({
-		"source": setupIds
-	});
+	function findVariablesInSetup(setupId, setupAndTeardowns) {
+		var variables = [];
+		
+		//Find the setup
+		var setup = null;
+		for(var j=0; j<setupAndTeardowns.length; j++) {
+			if(setupAndTeardowns[j].id === setupId) {
+				setup = setupAndTeardowns[j];
+				break;
+			}
+		}
 
-	$('#newTeardownId').typeahead({
-		"source": setupIds
-	});
+		if(setup) {
+			for(var k=0; k<setup.actions.length; k++) {
+				var action = setup.actions[k];
+				for(propName in action) {
+					if(propName === '$set') {
+						var setAction = action[propName];
+						for(varName in setAction) {
+							variables.push(varName);
+						}
+					}
+				}
+			}
+		}
 
+		return variables;
+	}
+}
 
-};

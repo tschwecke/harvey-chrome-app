@@ -126,7 +126,7 @@ function RequestCtrl($scope, HarveyContext, RequestSvc) {
 			editor.resize();
 	};
 
-	var wireupForm = function($scope, bodyText, bodyCallback) {
+	var wireupForm = function($scope, bodyText, bodyCallback, RequestSvc) {
 
 		if(_.isObject(bodyText)) bodyText = js_beautify(JSON.stringify(bodyText));
 
@@ -136,13 +136,21 @@ function RequestCtrl($scope, HarveyContext, RequestSvc) {
 		}
 		
 		$('#newRequestTemplateId').typeahead({
-			"source": templateIds
+			"source": templateIds,
+			"items": 15,
+			"sorter": function(items) {
+				return items.sort();
+			}
 		});
 
-		$('#resource').typeahead({
-			"source":["courseId", "courseItemId", "userId", "gradeId"],
+		$('#resource, #host, .header-value, .qs-value').typeahead({
+			"source": RequestSvc.availableVariables,
+			"items": 15,
+			"sorter": function(items) {
+				return items.sort();
+			},
 			"matcher": function(item) {
-				var cursorPosition = doGetCaretPosition(document.getElementById('resource'));
+				var cursorPosition = doGetCaretPosition(document.getElementById(this.$element.context.id));
 				var braceOpenPosition = this.query.lastIndexOf('${', cursorPosition);
 				var braceClosedPosition = this.query.lastIndexOf('}', cursorPosition);
 				if(cursorPosition>= 2 && braceOpenPosition > -1 && braceOpenPosition > braceClosedPosition) {
@@ -156,7 +164,7 @@ function RequestCtrl($scope, HarveyContext, RequestSvc) {
 				return false;
 			},
 			"updater": function(item) {
-				var cursorPosition = doGetCaretPosition(document.getElementById('resource'));
+				var cursorPosition = doGetCaretPosition(document.getElementById(this.$element.context.id));
 				var braceOpenPosition = this.query.lastIndexOf('${', cursorPosition);
 				var braceClosedPosition = this.query.indexOf('}', cursorPosition);
 				var nextBraceOpenPosition = this.query.indexOf('${', cursorPosition);
@@ -201,7 +209,7 @@ function RequestCtrl($scope, HarveyContext, RequestSvc) {
 
 
 	}
-	wireupForm($scope, $scope.request.body.value, $scope.updateModelWithBody);
+	wireupForm($scope, $scope.request.body.value, $scope.updateModelWithBody, RequestSvc);
 
 	//Assign template colors
 	var assignTemplateColors = function() {

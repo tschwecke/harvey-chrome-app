@@ -79,37 +79,39 @@ function SuiteCtrl($scope, HarveyContext, NavigationSvc) {
 	$scope.removeConfig = function(index) {
 		$scope.config.splice(index, 1);
 	}
+
+
+
+	function configureTypeAheads(HarveyContext) {
+		var setupIds = [];
+		for(var i=0; i<HarveyContext.data.setupAndTeardowns.length; i++) {
+			setupIds.push(HarveyContext.data.setupAndTeardowns[i].id);
+		}
+
+		$('#newSetupId').typeahead({
+			"source": setupIds
+		});
+
+		$('#newTeardownId').typeahead({
+			"source": setupIds
+		});
+	}
+
+	function convertConfigObjectToArray(configObj) {
+		var configArr = [];
+		for(var configKey in configObj) {
+			configArr.push({"key": configKey, "value": configObj[configKey]});
+		}
+
+		return configArr;
+	}
+
+	function convertConfigArrayToObject(configArr) {
+		var configObj = {};
+		for(var i=0; i<configArr.length; i++) {
+			configObj[configArr[i].key] = configArr[i].value;
+		}
+
+		return configObj;
+	}
 };
-
-function configureTypeAheads(HarveyContext) {
-	var setupIds = [];
-	for(var i=0; i<HarveyContext.data.setupAndTeardowns.length; i++) {
-		setupIds.push(HarveyContext.data.setupAndTeardowns[i].id);
-	}
-
-	$('#newSetupId').typeahead({
-		"source": setupIds
-	});
-
-	$('#newTeardownId').typeahead({
-		"source": setupIds
-	});
-}
-
-function convertConfigObjectToArray(configObj) {
-	var configArr = [];
-	for(var configKey in configObj) {
-		configArr.push({"key": configKey, "value": configObj[configKey]});
-	}
-
-	return configArr;
-}
-
-function convertConfigArrayToObject(configArr) {
-	var configObj = {};
-	for(var i=0; i<configArr.length; i++) {
-		configObj[configArr[i].key] = configArr[i].value;
-	}
-
-	return configObj;
-}

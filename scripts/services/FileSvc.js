@@ -1,29 +1,61 @@
 app.factory('FileSvc', function() {
 	var constructor = function() {
-		var _navigateAwayCallback = null;
+		var _currentFileEntry = null;
 
 		this.open = function(callback) {
-			parent.postMessage({"messageType": "openFile"}, '*');
+			var options = {type: 'openWritableFile',accepts:[{extensions: ['json']}]};
 
-			window.addEventListener('message', function(message) {
-				if(message.data.type === 'fileOpenSucceeded') {
-					callback(null, message.data.content);
-				}
-				else {
+			window.chrome.fileSystem.chooseEntry(options, function(fileEntry) {
+				if (!fileEntry) {
 					callback(null, null);
+					return;
 				}
+				_currentFileEntry = fileEntry;
+				fileEntry.file(function(file) {
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						callback(null, e.target.result);
+					};
+					reader.readAsText(file);
+				});
 			});
 		};
 		
 		this.save = function(content) {
 			prepContentForSave(content);
 			
-			parent.postMessage({"messageType": "save", "content": js_beautify(JSON.stringify(content))}, '*');
+			if(_currentFileEntry) {
+				saveContent(_currentFileEntry, message.data.content);
+			}
+			else {
+				var options = {type: 'saveFile',accepts:[{extensions: ['json']}]};
+
+				window.chrome.fileSystem.chooseEntry(options, function(fileEntry) {
+					if (!fileEntry) {
+						sendMessage('fileSaveCanceled');
+						return;
+					}
+					_currentFileEntry = fileEntry;
+					saveContent(fileEntry, message.data.content);
+				});
+			}
 		};
 
 		this.clear = function() {
 			parent.postMessage({"messageType": "clearFile"}, '*');
 		};
+
+		function saveContent(fileEntry, content) {
+			fileEntry.createWriter(function(fileWriter) {
+				fileWriter.onwrite = function(e) {
+					fileWriter.truncate(content.length);
+				};
+
+				var blob = new Blob([content], {type: 'text/plain'});
+				fileWriter.write(blob);
+			});
+		}
+
 	};
 
 	return new constructor();
