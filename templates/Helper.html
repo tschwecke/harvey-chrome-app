@@ -1,0 +1,21 @@
+	<div id="helperContainer" ng-controller="HelperCtrl" ng-class="{fadeInHelper: state=='fadingIn'}">
+		<input class="id" type="text" ng-model="id" placeholder="Helper Id"/>
+		<div style="clear:both;"></div>
+		<div class="helperRequestContainer">
+			<div class="header">Request</div>
+			<div ng-include src="'templates/Request.html'" ></div>
+		</div>
+		<div class="helperResponseContainer">
+			<div class="header">Expected Response</div>
+			<div ng-include src="'templates/Response.html'" ></div>
+		</div>
+		<div class="helperActionContainer">
+			<div class="header">Actions</div>
+			Under Construction
+		</div>
+		<div class="save" ng-show="changed">
+			<div class="btn btn-info" ng-click="keep()">Keep</div>
+			<div class="btn" ng-click="discard()">Discard</div>
+		</div>
+	</div>
+ 

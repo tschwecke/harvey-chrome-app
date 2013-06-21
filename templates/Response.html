@@ -1,0 +1,36 @@
+	<div id="responseContainer" ng-controller="ResponseCtrl">
+		<div class="container templatesContainer" ng-show="displayTemplates">
+			<div class="header">Templates  <i class="icon-plus" ng-click="showAddResponseTemplate=true"></i></div>
+			<div ng-repeat="template in response.templates" class="templateName" style="background-color: {{getColor($index)}};">
+				<i class="icon-move"></i>
+				{{template}}
+				<i class="icon-trash" ng-click="removeTemplate($index)"></i>
+			</div>
+			<div class="newTemplateIdContainer" ng-show="showAddResponseTemplate">
+				<input id="newResponseTemplateId" class="newTemplateId" type="text" placeholder="Template Id" data-provide="typeahead" ng-model="newTemplateId" />
+			</div>
+			<div ng-show="!response.templates.length && !showAddResponseTemplate" class="empty inline">None</div>
+		</div>
+		<div class="container">
+			<div class="header inline">Status Code:</div>
+			<input type="text" id="statusCode" class="statusCode" placeholder="Status Code" ng-model="response.statusCode.value" ng-style="{'background-color': getBgColor(response.statusCode)}" />
+		</div>
+		<div class="container">
+			<div class="header">Headers <i class="icon-plus" ng-click="addHeader()"></i></div>
+			<div ng-repeat="header in response.headers">
+				<input type="text" class="header-name" placeholder="Header Name" ng-model="header.key" ng-style="{'background-color': getHeaderBgColor(header)}" />:
+				<input type="text" class="header-value" placeholder="Header Value"  ng-model="header.value" ng-style="{'background-color': getHeaderBgColor(header)}" />
+				<i class="icon-trash" ng-click="removeHeader($index)"></i>
+			</div>
+			<div ng-show="!response.headers.length" class="empty">None</div>
+		</div>
+		<div class="container">
+			<div class="header">Body
+				<div class="bodyTools">
+					<i id="beautify" class="icon-align-left" ng-click="formatBody()"></i>
+					<span id="invalidjson" ng-show="validjson==false" class="label label-warning">Invalid Json</span>
+				</div>
+			</div>
+		</div>
+		<div id="responseBody" class="responseBody" ng-style="{'background-color': getBgColor(response.body)}"></div>
+	</div> 

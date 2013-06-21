@@ -1,0 +1,20 @@
+	<div id="helperListContainer" ng-controller="HelperListCtrl" ng-class="{fadeInHelperList: state=='fadingIn'}">
+		<i class="icon-plus" style="float:left" ng-click="createHelper()"></i>
+
+		<div class="search">
+			<input type="text" id="helperSearch" class="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
+		</div>
+		<div ng-repeat="helper in filteredHelpers" ng-class="{helper: true, deleting: helper.deleting}">
+			<div class="helperName">{{helper.id}}</div>
+			<div class="usedBy">
+				Used by {{helper.usedByCount}} <ng-pluralize count="helper.usedByCount" when="{'one': 'test', 'other': 'tests'}"> </ng-pluralize>
+				<div class="helperIcons">
+					<i class="icon-edit" ng-click="editHelper($index)"></i>
+					<i class="icon-trash" ng-click="deleteHelper($index)"></i>
+				</div>
+			</div>
+		</div>
+		<div class="noMatches" ng-show="allHelpers.length > 0 && filteredHelpers.length == 0">No Matches</div>
+		<div class="empty" ng-show="!allHelpers.length">Empty</div>
+	</div>
+ 

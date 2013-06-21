@@ -1,0 +1,20 @@
+	<div id="testListContainer" ng-controller="TestListCtrl"  ng-class="{fadeInTestList: state=='fadingIn'}">
+		<i class="icon-plus" style="float:left" ng-click="createTest()"></i>
+
+		<div class="search">
+			<input type="text" id="testSearch" class="search" placeholder="Search" ng-model="searchString" ng-change="filter()"></input>
+		</div>
+		<div ng-repeat="test in filteredTests" ng-class="{test: true, deleting: test.deleting}">
+			<div class="testName">{{test.id}}</div>
+			<div class="setups">
+				Setups: {{test.setup.length}}; Teardowns: {{test.teardown.length}}
+				<div class="testIcons">
+					<i class="icon-edit" ng-click="editTest($index)"></i>
+					<i class="icon-trash" ng-click="deleteTest($index)"></i>
+				</div>
+			</div>
+		</div>
+		<div class="noMatches" ng-show="allTests.length > 0 && filteredTests.length == 0">No Matches</div>
+		<div class="empty" ng-show="!allTests.length">Empty</div>
+	</div>
+ 

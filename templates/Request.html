@@ -1,0 +1,59 @@
+	<div id="requestContainer" ng-controller="RequestCtrl">
+		<div class="container templatesContainer" ng-show="displayTemplates">
+			<div class="header">Templates  <i class="icon-plus" ng-click="showAddRequestTemplate=true"></i></div>
+			<div ng-repeat="template in request.templates" class="templateName" style="background-color: {{getColor($index)}};">
+				<i class="icon-move"></i>
+				{{template}}
+				<i class="icon-trash" ng-click="removeTemplate($index)"></i>
+			</div>
+			<div class="newTemplateIdContainer" ng-show="showAddRequestTemplate">
+				<input id="newRequestTemplateId" class="newTemplateId" type="text" placeholder="Template Id" data-provide="typeahead" ng-model="newTemplateId" />
+			</div>
+			<div ng-show="!request.templates.length && !showAddRequestTemplate" class="empty inline">None</div>
+		</div>
+
+		<div class="container">
+			<select id="method" ng-class="{method: true, placeholder: methodEmpty}" ng-model="request.method.value" ng-change="methodChanged()" ng-style="{'background-color': getBgColor(request.method)}">
+				<option value='' ng-disabled="methodEmpty" ng-class="{hide: methodEmpty}">{{methodPlaceholder}}</option>
+				<option>GET</option>
+				<option>POST</option>
+				<option>PUT</option>
+				<option>DELETE</option>
+				<option>HEAD</option>
+				<option>OPTIONS</option>
+			</select>
+			<select id="protocol" ng-class="{protocol: true, placeholder: protocolEmpty}" ng-model="request.protocol.value" ng-change="protocolChanged()" ng-style="{'background-color': getBgColor(request.protocol)}">
+				<option value='' ng-disabled="protocolEmpty" ng-class="{hide: protocolEmpty}">{{protocolPlaceholder}}</option>
+				<option value="http">http://</option>
+				<option value="https">https://</option>
+			</select>
+			<input type="text" id="host" class="host" placeholder="Host" ng-model="request.host.value" ng-style="{'background-color': getBgColor(request.host)}" />
+			<input type="text" id="resource" class="resource" placeholder="Resource" data-provide="typeahead" ng-model="request.resource.value" ng-style="{'background-color': getBgColor(request.resource)}" />
+		</div>
+		<div class="container">
+			<div class="header">Querystring <i class="icon-plus" ng-click="addQuerystring()"></i></div>
+			<div  ng-repeat="qs in request.querystring">
+				<input type="text" class="qs-name" placeholder="Variable Name" ng-model="qs.key" />: <input type="text" class="qs-value" placeholder="Variable Value" ng-model="qs.value" />
+				<i class="icon-trash" ng-click="removeQuerystring($index)"></i>
+			</div>
+			<div ng-show="!request.querystring.length" class="empty">None</div>
+		</div>
+		<div class="container">
+			<div class="header">Headers <i class="icon-plus" ng-click="addHeader()"></i></div>
+			<div ng-repeat="header in request.headers">
+				<input type="text" class="header-name" placeholder="Header Name" ng-model="header.key" ng-style="{'background-color': getHeaderBgColor(header)}" />:
+				<input type="text" class="header-value" placeholder="Header Value"  ng-model="header.value" ng-style="{'background-color': getHeaderBgColor(header)}" />
+				<i class="icon-trash" ng-click="removeHeader($index)"></i>
+			</div>
+			<div ng-show="!request.headers.length" class="empty">None</div>
+		</div>
+		<div class="container">
+			<div class="header">Body
+				<div class="bodyTools">
+					<i id="beautify" class="icon-align-left" ng-click="formatBody()"></i>
+					<span id="invalidjson" ng-show="validjson==false" class="label label-warning">Invalid Json</span>
+				<div>
+			</div>
+		</div>
+		<div id="requestBody" class="requestBody"  ng-style="{'background-color': getBgColor(request.body)}"></div>
+	</div> 

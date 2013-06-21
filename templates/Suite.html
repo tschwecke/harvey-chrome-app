@@ -1,0 +1,37 @@
+	<div id="suiteContainer" ng-controller="SuiteCtrl" ng-class="{fadeInSuite: state=='fadingIn'}">
+		<div class="setupsContainer">
+			<div class="header">Setups  <i class="icon-plus" ng-click="showAddSetup=true"></i></div>
+			<div ng-repeat="setup in suite.suiteSetup" class="setupName"">
+				<i class="icon-move"></i>
+				{{setup}}
+				<i class="icon-trash" ng-click="removeSetup($index)"></i>
+			</div>
+			<div class="newSetupIdContainer" ng-show="showAddSetup">
+				<input id="newSetupId" class="newSetupId" type="text" placeholder="Setup Id" data-provide="typeahead" ng-model="newSetupId" />
+			</div>
+			<div ng-show="!suite.suiteSetup.length && !showAddSetup" class="empty inline">None</div>
+		</div>
+		<div class="teardownsContainer">
+			<div class="header">Teardowns  <i class="icon-plus" ng-click="showAddTeardown=true"></i></div>
+			<div ng-repeat="teardown in suite.suiteTeardown" class="teardownName"">
+				<i class="icon-move"></i>
+				{{teardown}}
+				<i class="icon-trash" ng-click="removeTeardown($index)"></i>
+			</div>
+			<div class="newTeardownIdContainer" ng-show="showAddTeardown">
+				<input id="newTeardownId" class="newTeardownId" type="text" placeholder="Teardown Id" data-provide="typeahead" ng-model="newTeardownId" />
+			</div>
+			<div ng-show="!suite.suiteTeardown.length && !showAddTeardown" class="empty inline">None</div>
+		</div>
+		<div class="configContainer">
+			<div class="header">Config <i class="icon-plus" ng-click="addConfig()"></i></div>
+			<div ng-repeat="configEntry in config">
+				<input type="text" class="config-name" placeholder="Config Name" ng-model="configEntry.key" />:
+				<input type="text" class="config-value" placeholder="Default Value"  ng-model="configEntry.value" />
+				<i class="icon-trash" ng-click="removeConfig($index)"></i>
+			</div>
+			<div ng-show="!config.length" class="empty">None</div>
+
+		</div>
+	</div>
+ 

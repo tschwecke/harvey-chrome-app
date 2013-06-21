@@ -1,0 +1,11 @@
+	<div id="templateContainer" ng-controller="TemplateCtrl" ng-class="{fadeInTemplate: state=='fadingIn'}">
+		<div class="container">
+			<input class="id" type="text" ng-model="id" placeholder="Template Id"/>
+		</div>
+		<div ng-include src="'templates/' + templateType + '.html'" ></div>
+		<div class="save" ng-show="changed">
+			<div class="btn btn-info" ng-click="keep()">Keep</div>
+			<div class="btn" ng-click="discard()">Discard</div>
+		</div>
+	</div>
+ 
