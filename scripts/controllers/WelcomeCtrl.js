@@ -22,6 +22,8 @@ function WelcomeCtrl($scope, HarveyContext, NavigationSvc, FileSvc) {
 					if(!HarveyContext.data.responseTemplates)	HarveyContext.data.responseTemplates = [];
 					if(!HarveyContext.data.setupAndTeardowns)	HarveyContext.data.setupAndTeardowns = [];
 					if(!HarveyContext.data.tests)				HarveyContext.data.tests = [];
+					if(!HarveyContext.data.suiteSetup)			HarveyContext.data.suiteSetup = [];
+					if(!HarveyContext.data.suiteTeardown)		HarveyContext.data.suiteTeardown = [];
 
 					HarveyContext.filteredTests = HarveyContext.data.tests;
 				});
