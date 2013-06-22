@@ -65,7 +65,11 @@ function HelperListCtrl($scope, HarveyContext, NavigationSvc) {
 	};
 
 	$scope.createHelper = function() {
-		HarveyContext.currentHelper = {};
+		HarveyContext.currentHelper = {
+			"id": null,
+			"request": {},
+			"expectedResponse": {}
+		};
 		NavigationSvc.navigate('Helper');
 	};
 

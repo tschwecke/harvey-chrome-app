@@ -50,6 +50,7 @@ function HelperCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSv
 		$scope.helper.id = $scope.id;
 		RequestSvc.populateTemplateWithRequest($scope.helper.request);
 		ResponseSvc.populateTemplateWithResponse($scope.helper.expectedResponse);
+		addIfNew(HarveyContext.data.setupAndTeardowns, $scope.helper);
 
 		NavigationSvc.navigate('HelperList');
 	};
@@ -57,5 +58,19 @@ function HelperCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSv
 	$scope.discard = function() {
 		NavigationSvc.navigate('HelperList');
 	};
+
+	function addIfNew(helperList, helper) {
+		var alreadyAdded = false;
+		for(var i=0; i<helperList.length; i++) {
+			if(helperList[i] == helper) {
+				alreadyAdded = true;
+				break;
+			}
+		}
+
+		if(!alreadyAdded) {
+			helperList.push(helper);
+		}
+	}
 
 }
