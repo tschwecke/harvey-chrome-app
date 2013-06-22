@@ -50,6 +50,10 @@
 		margin-left: 742px;
 	}
 
+	#menu .runActive {
+		margin-left: 900px;
+	}
+
 	#menu .save {
 		float:left;
 		margin-top: -12px;

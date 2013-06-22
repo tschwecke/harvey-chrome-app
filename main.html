@@ -16,6 +16,7 @@
 	<link href="styles/request.css" rel="stylesheet" />
 	<link href="styles/response.css" rel="stylesheet" />
 	<link href="styles/suite.css" rel="stylesheet" />
+	<link href="styles/run.css" rel="stylesheet" />
 </head>
 <body ng-controller="NavigationCtrl">
 	<div id="welcomeScreen" ng-controller="WelcomeCtrl" ng-class="{fadeWelcome: state=='fading', hideWelcome: state=='hidden'}">
@@ -40,11 +41,12 @@
 			<div ng-class="{menuItem: true, active: selectedMenu=='templates'}" ng-click="menuSelected('templates', 'TemplateList')">Templates</div>
 			<div ng-class="{menuItem: true, active: selectedMenu=='tests'}" ng-click="menuSelected('tests', 'TestList')">Tests</div>
 			<div ng-class="{menuItem: true, active: selectedMenu=='helpers'}" ng-click="menuSelected('helpers', 'HelperList')">Helpers</div>
+			<div ng-class="{menuItem: true, active: selectedMenu=='run'}" ng-click="menuSelected('run', 'Run')">Run</div>
 		</div>
 		<div>
 			<div class="save" ng-click="save()">Save</div>
 			<div class="suiteClose" ng-click="close()">Close</div>
-			<div ng-class="{menuPointer: true, suiteActive: selectedMenu=='suite', templatesActive: selectedMenu=='templates', testsActive: selectedMenu=='tests', helpersActive: selectedMenu=='helpers'}">
+			<div ng-class="{menuPointer: true, suiteActive: selectedMenu=='suite', templatesActive: selectedMenu=='templates', testsActive: selectedMenu=='tests', helpersActive: selectedMenu=='helpers', runActive: selectedMenu=='run'}">
 				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 8px; width: 24px;">
 					<polygon points="12,0 0,8 24,8" style="fill:#555555;stroke:#555555;stroke-width:1" />
 				</svg>
@@ -86,6 +88,7 @@
 <script src="scripts/controllers/RequestCtrl.js"></script>
 <script src="scripts/controllers/ResponseCtrl.js"></script>
 <script src="scripts/controllers/SuiteCtrl.js"></script>
+<script src="scripts/controllers/RunCtrl.js"></script>
 
 
 </body>

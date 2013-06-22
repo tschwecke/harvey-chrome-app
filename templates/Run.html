@@ -1,0 +1,16 @@
+	<div id="runContainer" ng-controller="RunCtrl" ng-class="{fadeInRun: state=='fadingIn'}">
+		<div class="btn" ng-click="run()">Run</div>
+		<hr />
+		<div ng-class="{runnable: true, waiting: setup.status == 'waiting', running: setup.status == 'running', success: setup.status == 'passed', failed: setup.status == 'failed'}" ng-repeat="setup in setupList">
+			{{setup.id}}
+		</div>
+		<hr />
+		<div ng-class="{runnable: true, waiting: test.status == 'waiting', running: test.status == 'running', success: test.status == 'passed', failed: test.status == 'failed'}" ng-repeat="test in suite.tests">
+			{{test.id}}
+		</div>
+		<hr />
+		<div ng-class="{runnable: true, waiting: teardown.status == 'waiting', running: teardown.status == 'running', success: teardown.status == 'passed', failed: teardown.status == 'failed'}" ng-repeat="teardown in suite.teardown">
+			{{teardown.id}}
+		</div>
+		
+	</div>
