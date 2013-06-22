@@ -23,26 +23,26 @@ app.factory('FileSvc', function() {
 		
 		this.save = function(content) {
 			prepContentForSave(content);
+			content = convertToString(content);
 			
 			if(_currentFileEntry) {
-				saveContent(_currentFileEntry, message.data.content);
+				saveContent(_currentFileEntry, content);
 			}
 			else {
 				var options = {type: 'saveFile',accepts:[{extensions: ['json']}]};
 
 				window.chrome.fileSystem.chooseEntry(options, function(fileEntry) {
 					if (!fileEntry) {
-						sendMessage('fileSaveCanceled');
 						return;
 					}
 					_currentFileEntry = fileEntry;
-					saveContent(fileEntry, message.data.content);
+					saveContent(fileEntry, content);
 				});
 			}
 		};
 
 		this.clear = function() {
-			parent.postMessage({"messageType": "clearFile"}, '*');
+			_currentFileEntry = null;
 		};
 
 		function saveContent(fileEntry, content) {
@@ -80,4 +80,8 @@ function prepContentForSave(content) {
 			prepContentForSave(content[i]);
 		}
 	}
+}
+
+function convertToString(json) {
+	return js_beautify(JSON.stringify(json));
 }
