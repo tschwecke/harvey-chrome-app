@@ -1,16 +1,40 @@
 	<div id="runContainer" ng-controller="RunCtrl" ng-class="{fadeInRun: state=='fadingIn'}">
-		<div class="btn" ng-click="run()">Run</div>
-		<hr />
-		<div ng-class="{runnable: true, waiting: setup.status == 'waiting', running: setup.status == 'running', success: setup.status == 'passed', failed: setup.status == 'failed'}" ng-repeat="setup in setupList">
-			{{setup.id}}
+		<div class="btn" ng-click="run()">Run</div>	
+
+		<div class="resultsContainer">
+			<div class="result" ng-show="setupList.length > 0">
+				<div class="testId">Suite Setup</div>
+				<div class="setupList">
+				</div>
+				<div class="testList">
+					<div title="{{setup.id}}" ng-repeat="setup in setupList" ng-class="'test ' + setup.status" ></div>
+				</div>
+				<div class="teardownList">
+				</div>
+			</div>
+			<div class="result" ng-repeat="test in suite.tests">
+				<div class="testId">{{test.id}}</div>
+				<div class="setupList">
+					<div class="setup passed" title="Setup 1"></div>
+					<div class="setup passed" title="Setup 2"></div>
+					<div class="setup passed" title="Setup 3"></div>
+				</div>
+				<div class="testList">
+					<div ng-class="'test ' + test.status" title="{{test.id}}"></div>
+				</div>
+				<div class="teardownList">
+					<div class="teardown failed" title="Teardown 1"></div>
+				</div>
+			</div>
+			<div class="result" ng-show="teardownList.length > 0">
+				<div class="testId">Suite Teardown</div>
+				<div class="setupList">
+				</div>
+				<div class="testList">
+					<div title="{{teardown.id}}" ng-repeat="teardown in teardownList" ng-class="'test ' + teardown.state" ></div>
+				</div>
+				<div class="teardownList">
+				</div>
+			</div>
 		</div>
-		<hr />
-		<div ng-class="{runnable: true, waiting: test.status == 'waiting', running: test.status == 'running', success: test.status == 'passed', failed: test.status == 'failed'}" ng-repeat="test in suite.tests">
-			{{test.id}}
-		</div>
-		<hr />
-		<div ng-class="{runnable: true, waiting: teardown.status == 'waiting', running: teardown.status == 'running', success: teardown.status == 'passed', failed: teardown.status == 'failed'}" ng-repeat="teardown in suite.teardown">
-			{{teardown.id}}
-		</div>
-		
 	</div>

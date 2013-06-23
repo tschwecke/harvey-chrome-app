@@ -14,29 +14,30 @@ function RunCtrl($scope, HarveyContext, NavigationSvc) {
 		});
 	}, 1);
 
+	
+
 	$scope.run = function() {
 		var suiteBuilder = new SuiteBuilder();
 
 		harveyStatus.onSuiteSetupStarting(function(setup) {
-			$scope.$apply(function(){
-				setup.status = 'running';
-			});
+			//Don't call $scope.$apply here because we are still within the scope of the $scope.run call
+			setup.status = 'running';
 		});
 	
 		harveyStatus.onSuiteSetupCompleted(function(setup, result) {
-			$scope.$apply(function(){
+			$scope.$apply(function() {
 				setup.status = result.passed ? 'passed' : 'failed';
 			});			
 		});
 
 		harveyStatus.onTestGroupStarting(function(test) {
-			$scope.$apply(function(){
+			$scope.$apply(function() {
 				test.status = 'running';
 			});
 		});
 
 		harveyStatus.onTestGroupCompleted(function(test, result) {
-			$scope.$apply(function(){
+			$scope.$apply(function() {
 				test.status = result.passed ? 'passed' : 'failed';
 			});
 		});

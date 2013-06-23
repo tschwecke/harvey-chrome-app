@@ -36,3 +36,53 @@
 	#runContainer .failed {
 		background-color: red;
 	}
+
+
+
+
+
+	#runContainer .resultsContainer {
+		text-align: left;
+	}
+
+	#runContainer .result div {
+		display: inline-block;
+	}
+
+	#runContainer .result .setup, #runContainer .result .teardown {
+		border-radius: 4px;
+		height: 8px;
+		width: 8px;
+		background-color: transparent;
+		border-style: solid;
+		border-width: 1px;
+		border-color: gray;
+	}
+
+	#runContainer .result .test {
+		border-radius: 6px;
+		height: 12px;
+		width: 12px;
+		background-color: transparent;
+		border-style: solid;
+		border-width: 1px;
+		border-color: gray;
+	}
+
+	#runContainer .result .running {
+		background-color: blue;
+		border: none;
+	}
+
+	#runContainer .result .passed {
+		background-color: green;
+		border: none;
+	}
+
+	#runContainer .result .failed {
+		background-color: red;
+		border: none;
+	}
+
+
+
