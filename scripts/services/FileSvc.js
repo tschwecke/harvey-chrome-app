@@ -62,7 +62,7 @@ app.factory('FileSvc', function() {
 });
  
 
-var badProperties = ['$$hashKey'];
+var badProperties = ['$$hashKey', "usedByCount"];
 
 function prepContentForSave(content) {
 	if(_.isObject(content)) {
