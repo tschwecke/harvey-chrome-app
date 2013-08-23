@@ -10,7 +10,7 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 	$scope.changed = false;
 
 	configureTypeAheads($scope.test, HarveyContext);
-	
+
 	NavigationSvc.setNavigateAwayCallback(function() {
 		$scope.state = 'fadingOut';
 	});
@@ -28,7 +28,7 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 	RequestSvc.availableVariables = variables;
 	ResponseSvc.availableVariables = variables;
 
-	
+
 	var originalRequest = null;
 	$scope.request = RequestSvc.currentRequest;
 	$scope.$watch('request', function(newValue, oldValue) {
@@ -59,7 +59,7 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 
 	$scope.keep = function() {
 		$scope.test.id = $scope.id;
-		
+
 		RequestSvc.populateTemplateWithRequest($scope.test.request);
 		ResponseSvc.populateTemplateWithResponse($scope.test.expectedResponse);
 
@@ -128,7 +128,7 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 		delete $scope.test.teardown.splice(index, 1);
 	}
 
-	
+
 	function configureTypeAheads(test, HarveyContext) {
 
 		//Get the list of helpers for the setup and teardown input boxes
@@ -188,7 +188,7 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 
 	function findVariablesInSetup(setupId, setupAndTeardowns) {
 		var variables = [];
-		
+
 		//Find the setup
 		var setup = null;
 		for(var j=0; j<setupAndTeardowns.length; j++) {
@@ -198,7 +198,7 @@ function TestCtrl($scope, HarveyContext, NavigationSvc, RequestSvc, ResponseSvc,
 			}
 		}
 
-		if(setup) {
+		if(setup && setup.hasOwnProperty('actions')) {
 			for(var k=0; k<setup.actions.length; k++) {
 				var action = setup.actions[k];
 				for(propName in action) {
